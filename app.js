@@ -18,7 +18,7 @@ const ACT1_FEATURED_ITEMS = [
 ];
 
 function getAct1ImagePath(filename) {
-  return './' + encodeURIComponent('The UNDERCOVER TEENAGE PRODIGY ') + '/' + encodeURIComponent(filename);
+  return './' + encodeURIComponent('The UNDERCOVER TEENAGE PRODIGY') + '/' + encodeURIComponent(filename);
 }
 
 // Route photos based on category first, then chronology.
