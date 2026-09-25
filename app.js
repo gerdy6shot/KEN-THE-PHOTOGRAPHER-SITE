@@ -21,6 +21,47 @@ function getAct1ImagePath(filename) {
   return './' + encodeURIComponent('The UNDERCOVER TEENAGE PRODIGY') + '/' + encodeURIComponent(filename);
 }
 
+const ENTERTAINMENT_ITEMS = [
+  { title: '50 Cent', file: '50 Cent.JPG' },
+  { title: 'Barack Obama', file: 'Barak Obama.JPG' },
+  { title: 'Beyoncé', file: 'Beyonce.JPG' },
+  { title: 'Denzel Washington & Russell Crowe', file: 'Denzel washingto, Russel Crow.JPG' },
+  { title: 'Indie Irie Performing', file: 'Indie Irie Performing.JPG' },
+  { title: 'Isaac Hayes', file: 'Issac Hayes.JPG' },
+  { title: 'James Brown', file: 'James Brown.JPG' },
+  { title: 'James Brown', file: 'Mr.James Brown.JPG' },
+  { title: 'Kanye West', file: 'Kanye WEST.JPG' },
+  { title: 'Kanye West and Robert', file: 'Kanye West and Robert.JPG' },
+  { title: 'Mariah Carey & Sean Combs', file: 'Mariah Carey & Sean Combs.JPG' },
+  { title: 'Michelle Obama', file: 'Michelle Obama.JPG' },
+  { title: 'Mike Tyson', file: 'Mike Tyson.JPG' },
+  { title: 'Nicki Minaj', file: 'Niki Minage.JPG' },
+  { title: 'Rick Ross & Puffy', file: 'Rick Ross & Puffy.JPG' },
+  { title: 'Snoop Dogg', file: 'Snoop Dogg.JPG' },
+  { title: 'Spike Lee', file: 'Spike Lee.JPG' },
+  { title: 'Venus & Serena Williams', file: 'Venus & Serena Williwms.JPG' },
+  { title: 'Young Chris Brown & T-Pain', file: 'Young Chris Brown & T-PAIN.JPG' },
+  { title: 'Celebrity Archive', file: 'IMG_5976.jpg' },
+  { title: 'Celebrity Archive', file: 'IMG_6052.JPG' },
+  { title: 'Celebrity Archive', file: 'IMG_6104.JPG' },
+  { title: 'Celebrity Archive', file: 'IMG_6110.JPG' },
+  { title: 'Celebrity Archive', file: 'IMG_6112.JPG' },
+  { title: 'Celebrity Archive', file: 'IMG_6120.JPG' },
+  { title: 'Celebrity Archive', file: 'IMG_6122.JPG' },
+  { title: 'Celebrity Archive', file: 'PHOTO-2026-09-04-19-40-42.jpg' },
+  { title: 'Celebrity Archive', file: '08316df3-7354-457c-9f08-583e661f9742.JPG' },
+  { title: 'Celebrity Archive', file: '8712101b-d159-495a-95bb-97c4084f210e.JPG' }
+].map(item => ({
+  ...item,
+  image_url:
+    './' +
+    encodeURIComponent('The UNDERCOVER TEENAGE PRODIGY ') +
+    '/' +
+    encodeURIComponent('Celebrity, Culture & Entertainment') +
+    '/' +
+    encodeURIComponent(item.file)
+}));
+
 // Route photos based on category first, then chronology.
 function getGalleryCategory(item) {
   const category = item.category ? item.category.toLowerCase() : '';
@@ -105,7 +146,15 @@ async function fetchAndRenderArchive() {
     });
   }
 
-  [gridMillion, gridEntertainment, gridPhotojournalism].filter(Boolean).forEach(grid => {
+  // Entertainment is also a curated static gallery and must render independently of Supabase.
+  if (gridEntertainment) {
+    gridEntertainment.innerHTML = '';
+    ENTERTAINMENT_ITEMS.forEach(item => {
+      gridEntertainment.insertAdjacentHTML('beforeend', renderPhotoCard(item));
+    });
+  }
+
+  [gridMillion, gridPhotojournalism].filter(Boolean).forEach(grid => {
     grid.innerHTML = '<p class="col-span-full archival-text text-[11px] text-[#555555] tracking-widest">LOADING ARCHIVE...</p>';
   });
 
@@ -116,7 +165,7 @@ async function fetchAndRenderArchive() {
 
   if (error) {
     console.error('Error fetching archive:', error);
-    [gridMillion, gridEntertainment, gridPhotojournalism].filter(Boolean).forEach(grid => {
+    [gridMillion, gridPhotojournalism].filter(Boolean).forEach(grid => {
       grid.innerHTML = '<p class="col-span-full archival-text text-[11px] text-[#8a3f3f] tracking-widest">ARCHIVE UNAVAILABLE.</p>';
     });
     return;
@@ -124,7 +173,6 @@ async function fetchAndRenderArchive() {
 
   const categories = {
     'grid-million-man-march': [],
-    'grid-entertainment': [],
     'grid-photojournalism': []
   };
 
