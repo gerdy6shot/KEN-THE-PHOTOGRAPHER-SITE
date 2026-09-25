@@ -86,6 +86,26 @@ const PHOTOJOURNALISM_ITEMS = [
     encodeURIComponent(item.file)
 }));
 
+
+const MILLION_MAN_MARCH_ITEMS = [
+  { title: 'Million Man March', file: '1a07b6f6-e548-4d67-aca2-bba3f27dbbcf.JPG' },
+  { title: 'Million Man March', file: '3009d718-fb8e-4e4c-942c-e679389fcaa4.JPG' },
+  { title: 'Million Man March', file: '65a642b9-7082-4bdc-9942-dd18e7cde61e.JPG' },
+  { title: 'Million Man March', file: '73764778-691b-4bcc-8981-05a07c0cef6a.JPG' },
+  { title: 'Million Man March', file: 'b80f95be-3451-4cda-81ec-500470e31cc9.JPG' },
+  { title: 'Million Man March', file: 'e1fae846-7cf6-4132-9a0a-6af982149e30.JPG' },
+  { title: 'Million Man March', file: 'e5a3e696-c264-47ca-9434-d6d4457b8aaf.JPG' }
+].map(item => ({
+  ...item,
+  image_url:
+    './' +
+    encodeURIComponent('The UNDERCOVER TEENAGE PRODIGY ') +
+    '/' +
+    encodeURIComponent('Million Man March') +
+    '/' +
+    encodeURIComponent(item.file)
+}));
+
 // Route photos based on category first, then chronology.
 function getGalleryCategory(item) {
   const category = item.category ? item.category.toLowerCase() : '';
@@ -186,9 +206,13 @@ async function fetchAndRenderArchive() {
     });
   }
 
-  [gridMillion].filter(Boolean).forEach(grid => {
-    grid.innerHTML = '<p class="col-span-full archival-text text-[11px] text-[#555555] tracking-widest">LOADING ARCHIVE...</p>';
-  });
+  // Million Man March is also a curated static gallery and must render independently of Supabase.
+  if (gridMillion) {
+    gridMillion.innerHTML = '';
+    MILLION_MAN_MARCH_ITEMS.forEach(item => {
+      gridMillion.insertAdjacentHTML('beforeend', renderPhotoCard(item));
+    });
+  }
 
   const { data: archiveItems, error } = await supabaseClient
     .from('archive_assets')
@@ -197,15 +221,11 @@ async function fetchAndRenderArchive() {
 
   if (error) {
     console.error('Error fetching archive:', error);
-    [gridMillion].filter(Boolean).forEach(grid => {
-      grid.innerHTML = '<p class="col-span-full archival-text text-[11px] text-[#8a3f3f] tracking-widest">ARCHIVE UNAVAILABLE.</p>';
-    });
+    console.warn('Supabase unavailable; static galleries remain visible.');
     return;
   }
 
-  const categories = {
-    'grid-million-man-march': []
-  };
+  const categories = {};
 
   archiveItems.forEach(item => {
     const gridId = getGalleryCategory(item);
