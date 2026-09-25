@@ -1,80 +1,67 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-[#0a0a0a] text-[#e5e5e5] antialiased">
+<html lang="en" class="bg-[#0b0b0b] text-[#d4d4d4] antialiased">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KENNETH HARRIS | Living Archival Portal</title>
+  <title>KENNETH HARRIS</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Google Fonts: Playfair Display (Museum Serif) & Space Mono (Archival Labels) -->
+  <!-- Google Fonts: Editorial Serif & Clean Modern Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
 
   <style>
     body {
-      font-family: 'Space Mono', monospace;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.05em;
     }
-    h1, h2, h3, .serif-heading {
-      font-family: 'Playfair Display', serif;
+    h1, h2, h3, .art-serif {
+      font-family: 'Cormorant Garamond', serif;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-[#c5a059] selection:text-[#0a0a0a]">
+<body class="min-h-screen flex flex-col justify-between selection:bg-[#222222] selection:text-[#ffffff]">
 
-  <!-- HEADER / NAVIGATION -->
-  <header class="border-b border-[#222222] py-8 px-6 md:px-12 bg-[#0a0a0a]/90 sticky top-0 z-50 backdrop-blur-md">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-      <div>
-        <h1 class="text-2xl md:text-3xl tracking-widest text-[#f3f3f3] uppercase font-bold">
-          Kenneth Harris
-        </h1>
-        <p class="text-[10px] tracking-[0.3em] text-[#c5a059] uppercase mt-1">
-          55-Year Living Archive &amp; Documentary Hub
-        </p>
-      </div>
+  <!-- GALLERY HEADER (Clean, Uncluttered, Minimalist) -->
+  <header class="py-12 px-8 md:px-20 border-b border-[#181818] flex justify-between items-baseline">
+    <div>
+      <h1 class="art-serif text-3xl md:text-5xl text-[#f5f5f5] font-light tracking-wide uppercase">
+        Kenneth Harris
+      </h1>
+      <p class="text-[11px] tracking-[0.35em] text-[#777777] uppercase mt-2 font-light">
+        Selected Works &bull; 1970&ndash;2025
+      </p>
+    </div>
 
-      <!-- Category Filter Tabs -->
-      <nav class="flex flex-wrap justify-center gap-6 text-xs tracking-widest text-[#888888]">
-        <button class="hover:text-[#c5a059] transition-colors border-b-2 border-[#c5a059] pb-1 text-[#f3f3f3]">ALL EXHIBITS</button>
-        <button class="hover:text-[#c5a059] transition-colors pb-1">EARLY QUEENS</button>
-        <button class="hover:text-[#c5a059] transition-colors pb-1">MOVEMENTS</button>
-        <button class="hover:text-[#c5a059] transition-colors pb-1">POP ROYALTY</button>
-        <button class="hover:text-[#c5a059] transition-colors pb-1">ART WORLD</button>
-      </nav>
+    <!-- Minimalist Secondary Nav -->
+    <div class="text-xs tracking-[0.25em] text-[#666666] uppercase font-light hidden md:block">
+      Archival Exhibition
     </div>
   </header>
 
-  <!-- HERO / EXHIBITION EPIGRAPH -->
-  <section class="py-20 px-6 max-w-4xl mx-auto text-center border-b border-[#1a1a1a]">
-    <span class="text-[10px] uppercase tracking-[0.4em] text-[#c5a059] block mb-4">Curatorial Statement</span>
-    <blockquote class="serif-heading text-2xl md:text-4xl italic text-[#f3f3f3] leading-relaxed font-normal">
+  <!-- ART WORLD EPIGRAPH / CURATORIAL INTENT -->
+  <section class="py-24 px-8 max-w-3xl mx-auto text-center">
+    <blockquote class="art-serif text-2xl md:text-4xl italic text-[#e0e0e0] font-light leading-relaxed">
       &ldquo;A photograph stops time. It stops death. As long as these files exist, we exist.&rdquo;
     </blockquote>
-    <cite class="block mt-6 text-xs uppercase tracking-widest text-[#666666] not-italic">&mdash; Kenneth Harris, Photographer &amp; Preservationist</cite>
+    <p class="mt-8 text-[11px] tracking-[0.3em] uppercase text-[#666666] font-light">
+      Kenneth Harris
+    </p>
   </section>
 
-  <!-- GALLERY VAULT SECTION -->
-  <main class="max-w-7xl mx-auto px-6 md:px-12 py-16 flex-grow">
-    <div class="flex justify-between items-end mb-12 border-b border-[#1a1a1a] pb-4">
-      <div>
-        <span class="text-[10px] uppercase tracking-[0.3em] text-[#c5a059]">Permanent Collection</span>
-        <h2 class="serif-heading text-3xl text-[#f3f3f3] font-normal mt-1">The Vault</h2>
-      </div>
-      <span class="text-xs text-[#555555] tracking-widest uppercase">Live Stream / Supabase</span>
-    </div>
-
-    <!-- Dynamic Container for Gallery Cards -->
-    <div id="vault-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-      <!-- Cards rendered via app.js will appear here -->
+  <!-- EXHIBITION GALLERY GRID -->
+  <main class="max-w-7xl mx-auto px-6 md:px-16 pb-24 flex-grow w-full">
+    <div id="vault-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 md:gap-20">
+      <!-- Art assets loaded dynamically from app.js -->
     </div>
   </main>
 
   <!-- FOOTER -->
-  <footer class="border-t border-[#1a1a1a] py-8 px-6 text-center text-[10px] tracking-widest text-[#555555] uppercase">
-    <p>&copy; Kenneth Harris Archival Trust. All Rights Reserved.</p>
+  <footer class="border-t border-[#161616] py-12 px-8 text-center text-[10px] tracking-[0.3em] text-[#444444] uppercase font-light">
+    Kenneth Harris Estate &bull; Fine Art Archive
   </footer>
 
   <!-- Supabase CDN & JS App Script -->
