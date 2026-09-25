@@ -62,6 +62,30 @@ const ENTERTAINMENT_ITEMS = [
     encodeURIComponent(item.file)
 }));
 
+
+const PHOTOJOURNALISM_ITEMS = [
+  { title: 'Clifford Glover Funeral', file: 'Clifford Glover Funeral.jpg' },
+  { title: 'Protest March on the Brooklyn Bridge', file: 'Protest march on the Brooklyn Bridge.jpg' },
+  { title: 'Social Movement Archive', file: '1ECFF515-30EB-4EA2-A8F9-1452D69AD1B2.PNG' },
+  { title: 'Social Movement Archive', file: '26564975-BEE5-4F7B-9D40-BC56228B6DC3.PNG' },
+  { title: 'Social Movement Archive', file: 'B5482719-1D41-4FBA-8838-34F0F486823F.PNG' },
+  { title: 'Social Movement Archive', file: 'fb047f6b-f116-4248-9138-cf677a4e88e3.JPG' },
+  { title: 'Social Movement Archive', file: 'IMG_6050.JPG' },
+  { title: 'Social Movement Archive', file: 'IMG_6051.JPG' },
+  { title: 'Social Movement Archive', file: 'IMG_6052.JPG' },
+  { title: 'Social Movement Archive', file: 'IMG_6053.JPG' },
+  { title: 'Social Movement Archive', file: 'IMG_6055.JPG' }
+].map(item => ({
+  ...item,
+  image_url:
+    './' +
+    encodeURIComponent('The UNDERCOVER TEENAGE PRODIGY ') +
+    '/' +
+    encodeURIComponent('Protests, Rallies & Social Movements') +
+    '/' +
+    encodeURIComponent(item.file)
+}));
+
 // Route photos based on category first, then chronology.
 function getGalleryCategory(item) {
   const category = item.category ? item.category.toLowerCase() : '';
@@ -154,7 +178,15 @@ async function fetchAndRenderArchive() {
     });
   }
 
-  [gridMillion, gridPhotojournalism].filter(Boolean).forEach(grid => {
+  // Photojournalism is a curated static gallery and must render independently of Supabase.
+  if (gridPhotojournalism) {
+    gridPhotojournalism.innerHTML = '';
+    PHOTOJOURNALISM_ITEMS.forEach(item => {
+      gridPhotojournalism.insertAdjacentHTML('beforeend', renderPhotoCard(item));
+    });
+  }
+
+  [gridMillion].filter(Boolean).forEach(grid => {
     grid.innerHTML = '<p class="col-span-full archival-text text-[11px] text-[#555555] tracking-widest">LOADING ARCHIVE...</p>';
   });
 
@@ -165,15 +197,14 @@ async function fetchAndRenderArchive() {
 
   if (error) {
     console.error('Error fetching archive:', error);
-    [gridMillion, gridPhotojournalism].filter(Boolean).forEach(grid => {
+    [gridMillion].filter(Boolean).forEach(grid => {
       grid.innerHTML = '<p class="col-span-full archival-text text-[11px] text-[#8a3f3f] tracking-widest">ARCHIVE UNAVAILABLE.</p>';
     });
     return;
   }
 
   const categories = {
-    'grid-million-man-march': [],
-    'grid-photojournalism': []
+    'grid-million-man-march': []
   };
 
   archiveItems.forEach(item => {
