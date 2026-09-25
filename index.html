@@ -1,68 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="bg-[#0a0a0a] text-[#e5e5e5] antialiased">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KEN THE PHOTOGRAPHER — Living Archival Portal</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KENNETH HARRIS | Living Archival Portal</title>
   
-  <!-- Supabase JS Client -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  
-  <!-- Fonts & Tailwind CSS -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            tungsten: '#D4AF37',
-            darkroom: '#0A0A0B',
-            obsidian: '#121214',
-            lightbox: '#F4F4F0'
-          },
-          fontFamily: {
-            serif: ['Cinzel', 'serif'],
-            sans: ['Inter', 'sans-serif'],
-          }
-        }
-      }
-    }
-  </script>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body class="bg-darkroom text-lightbox font-sans antialiased">
+  
+  <!-- Google Fonts: Playfair Display (Museum Serif) & Space Mono (Archival Labels) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
-  <!-- Navigation Bar -->
-  <header class="fixed top-0 w-full z-50 bg-darkroom/90 backdrop-blur-md border-b border-white/10 px-8 py-4 flex justify-between items-center">
-    <div class="font-serif text-xl tracking-widest text-tungsten font-bold">
-      KEN THE PHOTOGRAPHER
-    </div>
-    <div class="text-xs tracking-widest uppercase text-zinc-400">
-      55-Year Living Archive
+  <style>
+    body {
+      font-family: 'Space Mono', monospace;
+    }
+    h1, h2, h3, .serif-heading {
+      font-family: 'Playfair Display', serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-[#c5a059] selection:text-[#0a0a0a]">
+
+  <!-- HEADER / NAVIGATION -->
+  <header class="border-b border-[#222222] py-8 px-6 md:px-12 bg-[#0a0a0a]/90 sticky top-0 z-50 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <div>
+        <h1 class="text-2xl md:text-3xl tracking-widest text-[#f3f3f3] uppercase font-bold">
+          Kenneth Harris
+        </h1>
+        <p class="text-[10px] tracking-[0.3em] text-[#c5a059] uppercase mt-1">
+          55-Year Living Archive &amp; Documentary Hub
+        </p>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <nav class="flex flex-wrap justify-center gap-6 text-xs tracking-widest text-[#888888]">
+        <button class="hover:text-[#c5a059] transition-colors border-b-2 border-[#c5a059] pb-1 text-[#f3f3f3]">ALL EXHIBITS</button>
+        <button class="hover:text-[#c5a059] transition-colors pb-1">EARLY QUEENS</button>
+        <button class="hover:text-[#c5a059] transition-colors pb-1">MOVEMENTS</button>
+        <button class="hover:text-[#c5a059] transition-colors pb-1">POP ROYALTY</button>
+        <button class="hover:text-[#c5a059] transition-colors pb-1">ART WORLD</button>
+      </nav>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="h-screen flex flex-col justify-center items-center text-center px-4 relative pt-16">
-    <p class="text-xs uppercase tracking-widest text-tungsten mb-4">Curated Archive & Documentary Hub</p>
-    <h1 class="font-serif text-3xl md:text-5xl font-bold tracking-tight mb-6 max-w-4xl leading-relaxed">
-      "A photograph stops time. It stops death. As long as these files exist, we exist."
-    </h1>
-    <p class="text-zinc-400 italic text-sm md:text-base">— Kenneth Harris</p>
+  <!-- HERO / EXHIBITION EPIGRAPH -->
+  <section class="py-20 px-6 max-w-4xl mx-auto text-center border-b border-[#1a1a1a]">
+    <span class="text-[10px] uppercase tracking-[0.4em] text-[#c5a059] block mb-4">Curatorial Statement</span>
+    <blockquote class="serif-heading text-2xl md:text-4xl italic text-[#f3f3f3] leading-relaxed font-normal">
+      &ldquo;A photograph stops time. It stops death. As long as these files exist, we exist.&rdquo;
+    </blockquote>
+    <cite class="block mt-6 text-xs uppercase tracking-widest text-[#666666] not-italic">&mdash; Kenneth Harris, Photographer &amp; Preservationist</cite>
   </section>
 
-  <!-- Dynamic Archive Vault Section -->
-  <section class="max-w-7xl mx-auto px-6 py-20">
-    <h2 class="font-serif text-2xl text-tungsten mb-8 border-b border-zinc-800 pb-4">
-      The Vault (Live Stream from Supabase)
-    </h2>
-    <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <p id="loading-text" class="text-zinc-500 italic">Loading archival master prints...</p>
+  <!-- GALLERY VAULT SECTION -->
+  <main class="max-w-7xl mx-auto px-6 md:px-12 py-16 flex-grow">
+    <div class="flex justify-between items-end mb-12 border-b border-[#1a1a1a] pb-4">
+      <div>
+        <span class="text-[10px] uppercase tracking-[0.3em] text-[#c5a059]">Permanent Collection</span>
+        <h2 class="serif-heading text-3xl text-[#f3f3f3] font-normal mt-1">The Vault</h2>
+      </div>
+      <span class="text-xs text-[#555555] tracking-widest uppercase">Live Stream / Supabase</span>
     </div>
-  </section>
 
+    <!-- Dynamic Container for Gallery Cards -->
+    <div id="vault-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+      <!-- Cards rendered via app.js will appear here -->
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-[#1a1a1a] py-8 px-6 text-center text-[10px] tracking-widest text-[#555555] uppercase">
+    <p>&copy; Kenneth Harris Archival Trust. All Rights Reserved.</p>
+  </footer>
+
+  <!-- Supabase CDN & JS App Script -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>
 </body>
 </html>
