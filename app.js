@@ -4,8 +4,8 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 async function loadArchiveAssets() {
-  const galleryGrid = document.getElementById('gallery-grid');
-  const loadingText = document.getElementById('loading-text');
+  const galleryGrid = document.getElementById('vault-grid');
+  const loadingText = null;
 
   const { data: assets, error } = await supabaseClient
     .from('archive_assets')
@@ -14,7 +14,7 @@ async function loadArchiveAssets() {
 
   if (error) {
     console.error('Error fetching assets:', error);
-    loadingText.textContent = 'Failed to load archival records.';
+    if (loadingText) loadingText.textContent = 'Failed to load archival records.';
     return;
   }
 
