@@ -92,39 +92,37 @@ function renderPhotoCard(item) {
 }
 
 async function fetchAndRenderArchive() {
-  const gridIds = [
-    'grid-act-1',
-    'grid-million-man-march',
-    'grid-entertainment',
-    'grid-photojournalism'
-  ];
+  const grid1 = document.getElementById('grid-act-1');
+  const gridMillion = document.getElementById('grid-million-man-march');
+  const gridEntertainment = document.getElementById('grid-entertainment');
+  const gridPhotojournalism = document.getElementById('grid-photojournalism');
 
-  gridIds.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.innerHTML = '<p class="col-span-full archival-text text-[11px] text-[#555555] tracking-widest">LOADING ARCHIVE...</p>';
-    }
+  // Act I is a curated static gallery and must render even if Supabase is unavailable.
+  if (grid1) {
+    grid1.innerHTML = '';
+    ACT1_FEATURED_ITEMS.forEach(item => {
+      grid1.insertAdjacentHTML('beforeend', renderPhotoCard(item));
+    });
+  }
+
+  [gridMillion, gridEntertainment, gridPhotojournalism].filter(Boolean).forEach(grid => {
+    grid.innerHTML = '<p class="col-span-full archival-text text-[11px] text-[#555555] tracking-widest">LOADING ARCHIVE...</p>';
   });
 
   const { data: archiveItems, error } = await supabaseClient
     .from('archive_assets')
     .select('*')
-    .order('year_taken', { ascending: true, nullsFirst: false })
-    .order('created_at', { ascending: true });
+    .order('year_taken', { ascending: true, nullsFirst: false });
 
   if (error) {
     console.error('Error fetching archive:', error);
-    gridIds.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        el.innerHTML = '<p class="col-span-full archival-text text-[11px] text-[#8a3f3f] tracking-widest">ARCHIVE UNAVAILABLE.</p>';
-      }
+    [gridMillion, gridEntertainment, gridPhotojournalism].filter(Boolean).forEach(grid => {
+      grid.innerHTML = '<p class="col-span-full archival-text text-[11px] text-[#8a3f3f] tracking-widest">ARCHIVE UNAVAILABLE.</p>';
     });
     return;
   }
 
   const categories = {
-    'grid-act-1': [],
     'grid-million-man-march': [],
     'grid-entertainment': [],
     'grid-photojournalism': []
@@ -132,32 +130,21 @@ async function fetchAndRenderArchive() {
 
   archiveItems.forEach(item => {
     const gridId = getGalleryCategory(item);
-    if (categories[gridId]) {
-      categories[gridId].push(item);
-    } else {
-      categories['grid-act-1'].push(item);
-    }
+    if (categories[gridId]) categories[gridId].push(item);
   });
 
-  Object.keys(categories).forEach(gridId => {
+  Object.entries(categories).forEach(([gridId, items]) => {
     const gridElement = document.getElementById(gridId);
     if (!gridElement) return;
 
     gridElement.innerHTML = '';
 
-    if (gridId === 'grid-act-1') {
-      ACT1_FEATURED_ITEMS.forEach(item => {
-        gridElement.insertAdjacentHTML('beforeend', renderPhotoCard(item));
-      });
-      return;
-    }
-
-    if (categories[gridId].length === 0) {
+    if (!items.length) {
       gridElement.innerHTML = '<p class="col-span-full archival-text text-[11px] text-[#555555] tracking-widest">NO WORKS CATALOGUED IN THIS ROOM YET.</p>';
       return;
     }
 
-    categories[gridId].forEach(item => {
+    items.forEach(item => {
       gridElement.insertAdjacentHTML('beforeend', renderPhotoCard(item));
     });
   });
