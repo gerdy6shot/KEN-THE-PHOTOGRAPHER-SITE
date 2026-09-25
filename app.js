@@ -3,6 +3,35 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+const ACT1_IMAGE_FILES = [
+  '0f942ba3-2a82-4b67-98c9-219de29a8be1.JPG',
+  '1ECFF515-30EB-4EA2-A8F9-1452D69AD1B2.PNG',
+  '2330927b-36b7-4b45-98fd-c7e68d4ab9fc.JPG',
+  '26564975-BEE5-4F7B-9D40-BC56228B6DC3.PNG',
+  '450c4415-219e-4a69-a3e8-0d5d60f4949a.JPG',
+  'B5482719-1D41-4FBA-8838-34F0F486823F.PNG',
+  'E8A9ECB1-5AC1-46D0-8877-D8BD9F2F71E9.PNG',
+  'IMG_5942.jpg',
+  'IMG_6045.jpg',
+  'IMG_6050.JPG',
+  'IMG_6051.JPG',
+  'IMG_6052.JPG',
+  'IMG_6053.JPG',
+  'IMG_6055.JPG',
+  'Untitled - September 21, 2026 09.08.19 2.PNG',
+  'Untitled - September 21, 2026 09.08.19 3.PNG',
+  'Untitled - September 21, 2026 09.08.19.PNG',
+  'c8b79fd6-10b5-41b3-8db7-379cbb8a4929.JPG',
+  'e2af4d53-d8f9-4ae0-9b83-04e79ae65adc.JPG',
+  'fb047f6b-f116-4248-9138-cf677a4e88e3.JPG',
+  'fd093743-0505-448b-8ad7-8ea89559cc84.JPG'
+];
+
+function getAct1ImagePath(index) {
+  const filename = ACT1_IMAGE_FILES[index % ACT1_IMAGE_FILES.length];
+  return './' + encodeURIComponent('The UNDERCOVER TEENAGE PRODIGY ') + '/' + encodeURIComponent(filename);
+}
+
 function getNumericYear(value) {
   const match = String(value ?? '').match(/\b(19|20)\d{2}\b/);
   return match ? Number(match[0]) : null;
@@ -89,8 +118,21 @@ async function loadArchiveAssets() {
     grid.innerHTML = '';
   });
 
+  let act1ImageIndex = 0;
+
   assets.forEach(asset => {
     const targetGrid = getTargetGrid(asset);
+
+    if (targetGrid && targetGrid.id === 'grid-act-1') {
+      const act1Asset = {
+        ...asset,
+        image_url: getAct1ImagePath(act1ImageIndex)
+      };
+      act1ImageIndex += 1;
+      targetGrid.appendChild(createMuseumCard(act1Asset));
+      return;
+    }
+
     if (targetGrid) targetGrid.appendChild(createMuseumCard(asset));
   });
 
