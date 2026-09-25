@@ -107,11 +107,11 @@ function renderPhotoCard(item) {
   return `
     <figure class="group flex flex-col justify-between cursor-pointer fade-in">
       <div class="relative bg-[#0a0a0a] p-2 md:p-3 border border-[#1a1a1a] transition-all duration-700 ease-out group-hover:border-[#444444]">
-        <div class="overflow-hidden aspect-[4/3] flex items-center justify-center bg-[#000000]">
+        <div class="overflow-hidden flex items-center justify-center bg-[#000000]">
           <img
             src="${item.image_url || ''}"
             alt="${item.title || 'Kenneth Harris archival photograph'}"
-            class="object-cover w-full h-full opacity-80 grayscale-[20%] transition-all duration-1000 ease-out group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-[1.03]"
+            class="block w-full h-auto object-contain opacity-90 grayscale-[10%] transition-all duration-1000 ease-out group-hover:opacity-100 group-hover:grayscale-0"
             loading="lazy"
           />
         </div>
