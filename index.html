@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KEN THE PHOTOGRAPHER — Living Archival Portal</title>
+  
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <!-- Fonts & Tailwind CSS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            tungsten: '#D4AF37',
+            darkroom: '#0A0A0B',
+            obsidian: '#121214',
+            lightbox: '#F4F4F0'
+          },
+          fontFamily: {
+            serif: ['Cinzel', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-darkroom text-lightbox font-sans antialiased">
+
+  <!-- Navigation Bar -->
+  <header class="fixed top-0 w-full z-50 bg-darkroom/90 backdrop-blur-md border-b border-white/10 px-8 py-4 flex justify-between items-center">
+    <div class="font-serif text-xl tracking-widest text-tungsten font-bold">
+      KEN THE PHOTOGRAPHER
+    </div>
+    <div class="text-xs tracking-widest uppercase text-zinc-400">
+      55-Year Living Archive
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="h-screen flex flex-col justify-center items-center text-center px-4 relative pt-16">
+    <p class="text-xs uppercase tracking-widest text-tungsten mb-4">Curated Archive & Documentary Hub</p>
+    <h1 class="font-serif text-3xl md:text-5xl font-bold tracking-tight mb-6 max-w-4xl leading-relaxed">
+      "A photograph stops time. It stops death. As long as these files exist, we exist."
+    </h1>
+    <p class="text-zinc-400 italic text-sm md:text-base">— Kenneth Harris</p>
+  </section>
+
+  <!-- Dynamic Archive Vault Section -->
+  <section class="max-w-7xl mx-auto px-6 py-20">
+    <h2 class="font-serif text-2xl text-tungsten mb-8 border-b border-zinc-800 pb-4">
+      The Vault (Live Stream from Supabase)
+    </h2>
+    <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <p id="loading-text" class="text-zinc-500 italic">Loading archival master prints...</p>
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
