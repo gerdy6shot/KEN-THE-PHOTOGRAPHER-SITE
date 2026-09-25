@@ -1,67 +1,147 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-[#0b0b0b] text-[#d4d4d4] antialiased">
+<html lang="en" class="bg-[#040404] text-[#d4d4d4] antialiased scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KENNETH HARRIS</title>
+  <title>KEN THE PHOTOGRAPHER: THE ARCHIVAL MUSEUM</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Google Fonts: Editorial Serif & Clean Modern Sans -->
+  <!-- Google Fonts: Museum Serif, Clean Sans, & Archival Typewriter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@200;300;400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      letter-spacing: 0.05em;
+    body { font-family: 'Inter', sans-serif; letter-spacing: 0.05em; }
+    h1, h2, h3, .art-serif { font-family: 'Cormorant Garamond', serif; }
+    .archival-text { font-family: 'Courier Prime', monospace; }
+
+    /* Museum Lightbox Grid Texture */
+    .lightbox-bg {
+      background-size: 24px 24px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     }
-    h1, h2, h3, .art-serif {
-      font-family: 'Cormorant Garamond', serif;
+
+    /* Museum Wall Shadow */
+    .wall-shadow {
+      box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
     }
+
+    /* Keyframe Animations */
+    .fade-in { animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-[#222222] selection:text-[#ffffff]">
+<body class="min-h-screen flex flex-col selection:bg-[#222222] selection:text-[#ffffff] bg-[#040404]">
 
-  <!-- GALLERY HEADER (Clean, Uncluttered, Minimalist) -->
-  <header class="py-12 px-8 md:px-20 border-b border-[#181818] flex justify-between items-baseline">
-    <div>
-      <h1 class="art-serif text-3xl md:text-5xl text-[#f5f5f5] font-light tracking-wide uppercase">
-        Kenneth Harris
-      </h1>
-      <p class="text-[11px] tracking-[0.35em] text-[#777777] uppercase mt-2 font-light">
-        Selected Works &bull; 1970&ndash;2025
+  <!-- MUSEUM HEADER & NAVIGATION -->
+  <header class="relative py-6 px-8 md:px-16 border-b border-[#141414] flex flex-col md:flex-row justify-between items-center z-50 bg-[#040404]/95 backdrop-blur-md sticky top-0">
+    <div class="flex items-center gap-6">
+      <div>
+        <span class="archival-text text-[9px] text-[#555555] tracking-[0.3em] uppercase block">Archive ID: KH-1955-EXP</span>
+        <h1 class="art-serif text-xl md:text-3xl text-[#f5f5f5] font-light tracking-[0.15em] uppercase mt-0.5">
+          Kenneth Harris <span class="text-[#555555] font-normal">| The Archive</span>
+        </h1>
+      </div>
+    </div>
+
+    <!-- Gallery Room Router -->
+    <nav class="mt-4 md:mt-0 flex items-center gap-8 text-[10px] tracking-[0.3em] text-[#777777] uppercase font-light border-l md:border-l border-[#1a1a1a] pl-0 md:pl-8">
+      <a href="#act-1" class="hover:text-[#ffffff] transition-colors flex items-center gap-2">
+        <span class="archival-text text-[9px] text-[#444444]">01</span> Gallery I
+      </a>
+      <a href="#act-2" class="hover:text-[#ffffff] transition-colors flex items-center gap-2">
+        <span class="archival-text text-[9px] text-[#444444]">02</span> Lightbox Vault
+      </a>
+      <a href="#act-3" class="hover:text-[#ffffff] transition-colors flex items-center gap-2">
+        <span class="archival-text text-[9px] text-[#444444]">03</span> Gallery III
+      </a>
+    </nav>
+  </header>
+
+  <!-- ROTUNDA / EPIGRAPH -->
+  <section class="relative py-36 px-8 max-w-5xl mx-auto text-center fade-in flex flex-col items-center justify-center">
+    <span class="archival-text text-[10px] tracking-[0.4em] uppercase text-[#444444] mb-8 block">Exhibition Entrance</span>
+    <blockquote class="art-serif text-3xl md:text-5xl italic text-[#eaeaea] font-light leading-relaxed max-w-4xl">
+      &ldquo;A photograph stops time. It stops death. As long as these files exist, we exist.&rdquo;
+    </blockquote>
+    <div class="mt-10 flex items-center gap-3">
+      <div class="h-[1px] w-8 bg-[#222222]"></div>
+      <p class="archival-text text-[10px] tracking-[0.3em] uppercase text-[#666666]">
+        Kenneth Harris &bull; Curator Notes
+      </p>
+      <div class="h-[1px] w-8 bg-[#222222]"></div>
+    </div>
+  </section>
+
+  <!-- GALLERY ROOM I: THE UNDERCOVER TEENAGE PRODIGY -->
+  <section id="act-1" class="py-24 px-6 md:px-16 max-w-7xl mx-auto w-full border-t border-[#141414]">
+    <div class="mb-16 flex flex-col md:flex-row md:items-end justify-between border-b border-[#141414] pb-8">
+      <div>
+        <span class="archival-text text-[10px] tracking-[0.3em] text-[#555555] uppercase block mb-2">Room 101 &bull; 1955–1974</span>
+        <h2 class="art-serif text-3xl md:text-4xl text-[#f5f5f5]">Act I: The Undercover Teenage Prodigy</h2>
+      </div>
+      <p class="text-xs text-[#777777] font-light max-w-md leading-relaxed mt-4 md:mt-0">
+        From the streets of South Jamaica to the hardwood of Madison Square Garden. A fifteen-year-old equipped with a Canonet and Tri-X film.
       </p>
     </div>
 
-    <!-- Minimalist Secondary Nav -->
-    <div class="text-xs tracking-[0.25em] text-[#666666] uppercase font-light hidden md:block">
-      Archival Exhibition
+    <div id="grid-act-1" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-16">
+      <!-- Dynamic Museum Frames Loaded Here -->
     </div>
-  </header>
-
-  <!-- ART WORLD EPIGRAPH / CURATORIAL INTENT -->
-  <section class="py-24 px-8 max-w-3xl mx-auto text-center">
-    <blockquote class="art-serif text-2xl md:text-4xl italic text-[#e0e0e0] font-light leading-relaxed">
-      &ldquo;A photograph stops time. It stops death. As long as these files exist, we exist.&rdquo;
-    </blockquote>
-    <p class="mt-8 text-[11px] tracking-[0.3em] uppercase text-[#666666] font-light">
-      Kenneth Harris
-    </p>
   </section>
 
-  <!-- EXHIBITION GALLERY GRID -->
-  <main class="max-w-7xl mx-auto px-6 md:px-16 pb-24 flex-grow w-full">
-    <div id="vault-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 md:gap-20">
-      <!-- Art assets loaded dynamically from app.js -->
-    </div>
-  </main>
+  <!-- GALLERY ROOM II: THE LIGHTBOX VAULT (THE HIATUS) -->
+  <section id="act-2" class="py-28 px-6 md:px-16 w-full border-t border-[#141414] bg-[#020202] lightbox-bg relative wall-shadow">
+    <div class="max-w-7xl mx-auto">
+      <div class="mb-16 flex flex-col md:flex-row md:items-end justify-between border-b border-[#1a1a1a] pb-8">
+        <div>
+          <span class="archival-text text-[10px] tracking-[0.3em] text-[#d97706] uppercase block mb-2">&bull; Examination Table &bull; 1974–1995</span>
+          <h2 class="art-serif text-3xl md:text-4xl text-[#f5f5f5]">Act II: The Hiatus & The Rebirth</h2>
+        </div>
+        <p class="text-xs text-[#777777] font-light max-w-md leading-relaxed mt-4 md:mt-0">
+          Twenty years of silence. The camera laid down. Illuminated negatives from the collection until the Million Man March reactivated the lens.
+        </p>
+      </div>
 
-  <!-- FOOTER -->
-  <footer class="border-t border-[#161616] py-12 px-8 text-center text-[10px] tracking-[0.3em] text-[#444444] uppercase font-light">
-    Kenneth Harris Estate &bull; Fine Art Archive
+      <!-- Lightbox Vitrine Surface -->
+      <div id="grid-act-2" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <!-- Backlit Film Strips Loaded Here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY ROOM III: THE PARTNERSHIP & THE VAULT -->
+  <section id="act-3" class="py-24 px-6 md:px-16 max-w-7xl mx-auto w-full border-t border-[#141414]">
+    <div class="mb-16 flex flex-col md:flex-row md:items-end justify-between border-b border-[#141414] pb-8">
+      <div>
+        <span class="archival-text text-[10px] tracking-[0.3em] text-[#555555] uppercase block mb-2">Room 303 &bull; 1995–Present</span>
+        <h2 class="art-serif text-3xl md:text-4xl text-[#f5f5f5]">Act III: The Partnership & The Vault</h2>
+      </div>
+      <p class="text-xs text-[#777777] font-light max-w-md leading-relaxed mt-4 md:mt-0">
+        The archival engine. Cynthia Horner, the celebrity portfolio, and the preservation race against time.
+      </p>
+    </div>
+
+    <div id="grid-act-3" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-16">
+      <!-- Dynamic Museum Frames Loaded Here -->
+    </div>
+  </section>
+
+  <!-- MUSEUM FOOTER ARCHIVE -->
+  <footer class="border-t border-[#141414] py-20 px-8 text-center bg-[#020202]">
+    <div class="max-w-md mx-auto space-y-4">
+      <p class="archival-text text-[10px] tracking-[0.3em] text-[#444444] uppercase">
+        Kenneth Harris Estate &bull; ComView Media
+      </p>
+      <p class="text-[11px] text-[#666666] font-light">
+        Curated & Directed by <span class="text-[#888888]">Gerdy Abelard</span>
+      </p>
+    </div>
   </footer>
 
   <!-- Supabase CDN & JS App Script -->
