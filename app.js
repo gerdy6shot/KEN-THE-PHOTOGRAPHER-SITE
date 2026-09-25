@@ -3,24 +3,21 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1
 
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Existing Act I image library already committed to the repository.
-const ACT1_IMAGE_FILES = [
-  '450c4415-219e-4a69-a3e8-0d5d60f4949a.JPG', // Al Green
-  '2330927b-36b7-4b45-98fd-c7e68d4ab9fc.JPG', // Ray Charles
-  '0f942ba3-2a82-4b67-98c9-219de29a8be1.JPG', // Knicks courtside
-  'e2af4d53-d8f9-4ae0-9b83-04e79ae65adc.JPG', // Knicks game
-  'IMG_6050.JPG',
-  'IMG_6051.JPG',
-  'IMG_6052.JPG',
-  'IMG_6053.JPG',
-  'IMG_6055.JPG',
-  'IMG_6045.jpg',
-  'c8b79fd6-10b5-41b3-8db7-379cbb8a4929.JPG',
-  'fd093743-0505-448b-8ad7-8ea89559cc84.JPG'
+// Curated Act I image set committed to the repository.
+const ACT1_FEATURED_ITEMS = [
+  { title: 'Al Green', image_url: getAct1ImagePath('AL GREEN.JPG') },
+  { title: 'Clifford Glover Funeral', image_url: getAct1ImagePath('Clifford Glover Funeral.jpg') },
+  { title: 'Kenneth Harris in High School', image_url: getAct1ImagePath('Kenneth Harris in Highschool.jpg') },
+  { title: 'Knicks Courtside at 15 Years Old', image_url: getAct1ImagePath('knicks court side at 15 yearsold.JPG') },
+  { title: 'Knicks Game Courtside at 15 Years', image_url: getAct1ImagePath('Knicks game courtside at 15 years.JPG') },
+  { title: 'Nina Simone', image_url: getAct1ImagePath('Nina Simone.jpg') },
+  { title: 'Grandfather and Aunt', image_url: getAct1ImagePath('Picture of his Grandfather and aunt.jpg') },
+  { title: 'Grandfather', image_url: getAct1ImagePath('Picture of his grandfather.jpg') },
+  { title: 'Protest March on the Brooklyn Bridge', image_url: getAct1ImagePath('Protest march on the Brooklyn Bridge.jpg') },
+  { title: 'Ray Charles', image_url: getAct1ImagePath('Ray charles.JPG') }
 ];
 
-function getAct1ImagePath(index) {
-  const filename = ACT1_IMAGE_FILES[index % ACT1_IMAGE_FILES.length];
+function getAct1ImagePath(filename) {
   return './' + encodeURIComponent('The UNDERCOVER TEENAGE PRODIGY ') + '/' + encodeURIComponent(filename);
 }
 
@@ -142,13 +139,18 @@ async function fetchAndRenderArchive() {
     }
   });
 
-  let act1ImageIndex = 0;
-
   Object.keys(categories).forEach(gridId => {
     const gridElement = document.getElementById(gridId);
     if (!gridElement) return;
 
     gridElement.innerHTML = '';
+
+    if (gridId === 'grid-act-1') {
+      ACT1_FEATURED_ITEMS.forEach(item => {
+        gridElement.insertAdjacentHTML('beforeend', renderPhotoCard(item));
+      });
+      return;
+    }
 
     if (categories[gridId].length === 0) {
       gridElement.innerHTML = '<p class="col-span-full archival-text text-[11px] text-[#555555] tracking-widest">NO WORKS CATALOGUED IN THIS ROOM YET.</p>';
@@ -156,12 +158,7 @@ async function fetchAndRenderArchive() {
     }
 
     categories[gridId].forEach(item => {
-      const renderedItem =
-        gridId === 'grid-act-1'
-          ? { ...item, image_url: getAct1ImagePath(act1ImageIndex++) }
-          : item;
-
-      gridElement.insertAdjacentHTML('beforeend', renderPhotoCard(renderedItem));
+      gridElement.insertAdjacentHTML('beforeend', renderPhotoCard(item));
     });
   });
 }
