@@ -1,0 +1,13 @@
+import { cp, mkdir, readFile, rm, stat } from 'node:fs/promises';
+import { resolve } from 'node:path';
+const root = resolve(import.meta.dirname, '..');
+const output = resolve(root, 'dist');
+const files = ['index.html', 'style.css', 'app.js', 'archive-data.js', 'site-config.js', 'favicon.svg', '_headers'];
+await rm(output, { recursive: true, force: true });
+await mkdir(output, { recursive: true });
+for (const file of files) await cp(resolve(root, file), resolve(output, file));
+await cp(resolve(root, 'assets'), resolve(output, 'assets'), { recursive: true });
+const source = await readFile(resolve(root, 'archive-data.js'), 'utf8');
+const items = JSON.parse(source.slice(source.indexOf('['), source.lastIndexOf(']') + 1));
+for (const item of items) await stat(resolve(output, item.image));
+console.log(`Cloudflare build ready: ${items.length} archive records. Only public website assets are included.`);

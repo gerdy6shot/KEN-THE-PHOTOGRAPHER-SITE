@@ -6,7 +6,11 @@ A responsive, inquiry-led photographic portfolio built with HTML, CSS, and vanil
 
 From this directory run `python3 -m http.server 8080`, then open http://localhost:8080.
 
-The root can be served by an existing static host or GitHub Pages. This change does not alter hosting settings or publish automatically.
+The production host is the existing Cloudflare Pages project `ken-the-photographer`.
+
+Build with `node scripts/build.mjs`, then deploy with `wrangler pages deploy dist --project-name ken-the-photographer --branch main`. The build includes only public website assets, excluding repository metadata and local configuration. Cloudflare response headers are configured in `_headers`.
+
+The original source referenced a Supabase project that is not accessible to the currently connected accounts. No replacement project is selected automatically; inquiry email drafts remain available until the correct backend is confirmed.
 
 ## Configure inquiries and Kenny's presentation
 
