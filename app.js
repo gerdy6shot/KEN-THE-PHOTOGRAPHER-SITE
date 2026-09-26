@@ -54,11 +54,7 @@ const ENTERTAINMENT_ITEMS = [
 ].map(item => ({
   ...item,
   image_url:
-    './' +
-    encodeURIComponent('The UNDERCOVER TEENAGE PRODIGY ') +
-    '/' +
-    encodeURIComponent('Celebrity, Culture & Entertainment') +
-    '/' +
+    './celebrity-culture-entertainment/' +
     encodeURIComponent(item.file)
 }));
 
