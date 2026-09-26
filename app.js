@@ -1,248 +1,225 @@
-const SUPABASE_URL = 'https://jurnsxyyahltltfrljls.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInJlZiI6Imp1cm5zeHl5YWhsdGx0ZnJsamxzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMzc1OTQsImV4cCI6MjEwNTkxMzU5NH0.u975ePxn0cwMeVnZUo2PI8RPy_DyE4k6jseb-qcUkoM';
-
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-// Curated Act I image set committed to the repository.
-const ACT1_FEATURED_ITEMS = [
-  { title: 'Al Green', image_url: getAct1ImagePath('AL GREEN.JPG') },
-  { title: 'Clifford Glover Funeral', image_url: getAct1ImagePath('Clifford Glover Funeral.jpg') },
-  { title: 'Kenneth Harris in High School', image_url: getAct1ImagePath('Kenneth Harris in Highschool.jpg') },
-  { title: 'Knicks Courtside at 15 Years Old', image_url: getAct1ImagePath('knicks court side at 15 yearsold.JPG') },
-  { title: 'Knicks Game Courtside at 15 Years', image_url: getAct1ImagePath('Knicks game courtside at 15 years.JPG') },
-  { title: 'Nina Simone', image_url: getAct1ImagePath('Nina Simone.jpg') },
-  { title: 'Grandfather and Aunt', image_url: getAct1ImagePath('Picture of his Grandfather and aunt.jpg') },
-  { title: 'Grandfather', image_url: getAct1ImagePath('Picture of his grandfather.jpg') },
-  { title: 'Protest March on the Brooklyn Bridge', image_url: getAct1ImagePath('Protest march on the Brooklyn Bridge.jpg') },
-  { title: 'Ray Charles', image_url: getAct1ImagePath('Ray charles.JPG') }
-];
-
-function getAct1ImagePath(filename) {
-  return './' + encodeURIComponent('The UNDERCOVER TEENAGE PRODIGY') + '/' + encodeURIComponent(filename);
-}
-
-const ENTERTAINMENT_ITEMS = [
-  { title: '50 Cent', file: '50 Cent.JPG' },
-  { title: 'Barack Obama', file: 'Barak Obama.JPG' },
-  { title: 'Beyoncé', file: 'Beyonce.JPG' },
-  { title: 'Denzel Washington & Russell Crowe', file: 'Denzel washingto, Russel Crow.JPG' },
-  { title: 'Indie Irie Performing', file: 'Indie Irie Performing.JPG' },
-  { title: 'Isaac Hayes', file: 'Issac Hayes.JPG' },
-  { title: 'James Brown', file: 'James Brown.JPG' },
-  { title: 'James Brown', file: 'Mr.James Brown.JPG' },
-  { title: 'Kanye West', file: 'Kanye WEST.JPG' },
-  { title: 'Kanye West and Robert', file: 'Kanye West and Robert.JPG' },
-  { title: 'Mariah Carey & Sean Combs', file: 'Mariah Carey & Sean Combs.JPG' },
-  { title: 'Michelle Obama', file: 'Michelle Obama.JPG' },
-  { title: 'Mike Tyson', file: 'Mike Tyson.JPG' },
-  { title: 'Nicki Minaj', file: 'Niki Minage.JPG' },
-  { title: 'Rick Ross & Puffy', file: 'Rick Ross & Puffy.JPG' },
-  { title: 'Snoop Dogg', file: 'Snoop Dogg.JPG' },
-  { title: 'Spike Lee', file: 'Spike Lee.JPG' },
-  { title: 'Venus & Serena Williams', file: 'Venus & Serena Williwms.JPG' },
-  { title: 'Young Chris Brown & T-Pain', file: 'Young Chris Brown & T-PAIN.JPG' },
-  { title: 'Celebrity Archive', file: 'IMG_5976.jpg' },
-  { title: 'Celebrity Archive', file: 'IMG_6052.JPG' },
-  { title: 'Celebrity Archive', file: 'IMG_6104.JPG' },
-  { title: 'Celebrity Archive', file: 'IMG_6110.JPG' },
-  { title: 'Celebrity Archive', file: 'IMG_6112.JPG' },
-  { title: 'Celebrity Archive', file: 'IMG_6120.JPG' },
-  { title: 'Celebrity Archive', file: 'IMG_6122.JPG' },
-  { title: 'Celebrity Archive', file: 'PHOTO-2026-09-04-19-40-42.jpg' },
-  { title: 'Celebrity Archive', file: '08316df3-7354-457c-9f08-583e661f9742.JPG' },
-  { title: 'Celebrity Archive', file: '8712101b-d159-495a-95bb-97c4084f210e.JPG' }
-].map(item => ({
-  ...item,
-  image_url:
-    './celebrity-culture-entertainment/' +
-    encodeURIComponent(item.file)
-}));
-
-
-const PHOTOJOURNALISM_ITEMS = [
-  { title: 'Clifford Glover Funeral', file: 'Clifford Glover Funeral.jpg' },
-  { title: 'Protest March on the Brooklyn Bridge', file: 'Protest march on the Brooklyn Bridge.jpg' },
-  { title: 'Social Movement Archive', file: '1ECFF515-30EB-4EA2-A8F9-1452D69AD1B2.PNG' },
-  { title: 'Social Movement Archive', file: '26564975-BEE5-4F7B-9D40-BC56228B6DC3.PNG' },
-  { title: 'Social Movement Archive', file: 'B5482719-1D41-4FBA-8838-34F0F486823F.PNG' },
-  { title: 'Social Movement Archive', file: 'fb047f6b-f116-4248-9138-cf677a4e88e3.JPG' },
-  { title: 'Social Movement Archive', file: 'IMG_6050.JPG' },
-  { title: 'Social Movement Archive', file: 'IMG_6051.JPG' },
-  { title: 'Social Movement Archive', file: 'IMG_6052.JPG' },
-  { title: 'Social Movement Archive', file: 'IMG_6053.JPG' },
-  { title: 'Social Movement Archive', file: 'IMG_6055.JPG' }
-].map(item => ({
-  ...item,
-  image_url:
-    './' +
-    encodeURIComponent('The UNDERCOVER TEENAGE PRODIGY ') +
-    '/' +
-    encodeURIComponent('Protests, Rallies & Social Movements') +
-    '/' +
-    encodeURIComponent(item.file)
-}));
-
-
-const MILLION_MAN_MARCH_ITEMS = [
-  { title: 'Million Man March', file: '1a07b6f6-e548-4d67-aca2-bba3f27dbbcf.JPG' },
-  { title: 'Million Man March', file: '3009d718-fb8e-4e4c-942c-e679389fcaa4.JPG' },
-  { title: 'Million Man March', file: '65a642b9-7082-4bdc-9942-dd18e7cde61e.JPG' },
-  { title: 'Million Man March', file: '73764778-691b-4bcc-8981-05a07c0cef6a.JPG' },
-  { title: 'Million Man March', file: 'b80f95be-3451-4cda-81ec-500470e31cc9.JPG' },
-  { title: 'Million Man March', file: 'e1fae846-7cf6-4132-9a0a-6af982149e30.JPG' },
-  { title: 'Million Man March', file: 'e5a3e696-c264-47ca-9434-d6d4457b8aaf.JPG' }
-].map(item => ({
-  ...item,
-  image_url:
-    './' +
-    encodeURIComponent('The UNDERCOVER TEENAGE PRODIGY ') +
-    '/' +
-    encodeURIComponent('Million Man March') +
-    '/' +
-    encodeURIComponent(item.file)
-}));
-
-// Route photos based on category first, then chronology.
-function getGalleryCategory(item) {
-  const category = item.category ? item.category.toLowerCase() : '';
-  const title = item.title ? item.title.toLowerCase() : '';
-  const year = parseInt(item.year_taken, 10) || 0;
-
-  if (category.includes('million man march') || title.includes('million man march')) {
-    return 'grid-million-man-march';
-  }
-
-  if (
-    category.includes('photojournalism') ||
-    category.includes('movement') ||
-    category.includes('protest')
-  ) {
-    return 'grid-photojournalism';
-  }
-
-  if (
-    category.includes('celebrity') ||
-    category.includes('entertainment') ||
-    category.includes('music')
-  ) {
-    return 'grid-entertainment';
-  }
-
-  if (year >= 1955 && year <= 1974) {
-    return 'grid-act-1';
-  }
-
-  return 'grid-act-1';
-}
-
-function renderPhotoCard(item) {
-  const inscriptionHTML = item.inscription
-    ? `<div class="mt-4 p-3 bg-[#111111] border border-[#222222] rounded-sm">
-         <p class="archival-text text-[11px] text-[#aaaaaa] leading-relaxed">
-           <span class="text-[#666666]">Note:</span> ${item.inscription}
-         </p>
-       </div>`
-    : '';
-
-  return `
-    <figure class="group flex flex-col justify-between cursor-pointer fade-in">
-      <div class="relative bg-[#0a0a0a] p-2 md:p-3 border border-[#1a1a1a] transition-all duration-700 ease-out group-hover:border-[#444444]">
-        <div class="overflow-hidden flex items-center justify-center bg-[#000000]">
-          <img
-            src="${item.image_url || ''}"
-            alt="${item.title || 'Kenneth Harris archival photograph'}"
-            class="block w-full h-auto object-contain opacity-90 grayscale-[10%] transition-all duration-1000 ease-out group-hover:opacity-100 group-hover:grayscale-0"
-            loading="lazy"
-          />
-        </div>
-      </div>
-
-      <figcaption class="mt-6 space-y-2">
-        <div class="flex justify-between items-baseline gap-6 border-b border-[#222222] pb-2">
-          <h3 class="art-serif text-xl text-[#eeeeee] font-normal tracking-wide group-hover:text-[#ffffff] transition-colors">
-            ${item.title || 'Untitled'}
-          </h3>
-          <span class="archival-text text-[11px] text-[#777777] shrink-0">
-            ${item.year_taken || 'Undated'}
-          </span>
-        </div>
-        ${inscriptionHTML}
-      </figcaption>
-    </figure>
-  `;
-}
-
-async function fetchAndRenderArchive() {
-  const grid1 = document.getElementById('grid-act-1');
-  const gridMillion = document.getElementById('grid-million-man-march');
-  const gridEntertainment = document.getElementById('grid-entertainment');
-  const gridPhotojournalism = document.getElementById('grid-photojournalism');
-
-  // Act I is a curated static gallery and must render even if Supabase is unavailable.
-  if (grid1) {
-    grid1.innerHTML = '';
-    ACT1_FEATURED_ITEMS.forEach(item => {
-      grid1.insertAdjacentHTML('beforeend', renderPhotoCard(item));
-    });
-  }
-
-  // Entertainment is also a curated static gallery and must render independently of Supabase.
-  if (gridEntertainment) {
-    gridEntertainment.innerHTML = '';
-    ENTERTAINMENT_ITEMS.forEach(item => {
-      gridEntertainment.insertAdjacentHTML('beforeend', renderPhotoCard(item));
-    });
-  }
-
-  // Photojournalism is a curated static gallery and must render independently of Supabase.
-  if (gridPhotojournalism) {
-    gridPhotojournalism.innerHTML = '';
-    PHOTOJOURNALISM_ITEMS.forEach(item => {
-      gridPhotojournalism.insertAdjacentHTML('beforeend', renderPhotoCard(item));
-    });
-  }
-
-  // Million Man March is also a curated static gallery and must render independently of Supabase.
-  if (gridMillion) {
-    gridMillion.innerHTML = '';
-    MILLION_MAN_MARCH_ITEMS.forEach(item => {
-      gridMillion.insertAdjacentHTML('beforeend', renderPhotoCard(item));
-    });
-  }
-
-  const { data: archiveItems, error } = await supabaseClient
-    .from('archive_assets')
-    .select('*')
-    .order('year_taken', { ascending: true, nullsFirst: false });
-
-  if (error) {
-    console.error('Error fetching archive:', error);
-    console.warn('Supabase unavailable; static galleries remain visible.');
-    return;
-  }
-
-  const categories = {};
-
-  archiveItems.forEach(item => {
-    const gridId = getGalleryCategory(item);
-    if (categories[gridId]) categories[gridId].push(item);
+(() => {
+  'use strict';
+  const config = window.SITE_CONFIG || {};
+  const items = window.ARCHIVE_ITEMS || [];
+  const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(config.inquiryEmail || '') ? config.inquiryEmail : 'licensing@kenthephotographer.com';
+  const labels = { early: 'THE EARLY YEARS', culture: 'MUSIC & CULTURE', march: 'MILLION MAN MARCH', movements: 'THE MOVEMENT' };
+  const featured = ['KTP-EARLY-010', 'KTP-EARLY-006', 'KTP-EARLY-004', 'KTP-CULTURE-007', 'KTP-CULTURE-012', 'KTP-EARLY-002'];
+  const orderedItems = [...items].sort((a, b) => {
+    const rank = item => featured.includes(item.id) ? featured.indexOf(item.id) : featured.length;
+    return rank(a) - rank(b);
   });
+  let category = 'all';
+  let query = '';
+  let visibleCount = 6;
+  let activePhoto = null;
+  const grid = document.querySelector('#photo-grid');
+  const photoDialog = document.querySelector('#photo-dialog');
+  const inquiryDialog = document.querySelector('#inquiry-dialog');
+  const form = document.querySelector('#inquiry-form');
+  const interest = document.querySelector('#inquiry-type');
+  const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+  const normalized = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  const filteredItems = () => orderedItems.filter(item => (category === 'all' || item.category === category) && normalized(`${item.title} ${labels[item.category]} ${item.id}`).includes(normalized(query)));
 
-  Object.entries(categories).forEach(([gridId, items]) => {
-    const gridElement = document.getElementById(gridId);
-    if (!gridElement) return;
-
-    gridElement.innerHTML = '';
-
-    if (!items.length) {
-      gridElement.innerHTML = '<p class="col-span-full archival-text text-[11px] text-[#555555] tracking-widest">NO WORKS CATALOGUED IN THIS ROOM YET.</p>';
-      return;
+  function renderGallery() {
+    const filtered = filteredItems();
+    grid.innerHTML = filtered.slice(0, visibleCount).map(item => `
+      <figure class="photo-card">
+        <button class="photo-open" data-photo="${escapeHTML(item.id)}" aria-label="View ${escapeHTML(item.title)}">
+          <img src="${escapeHTML(item.image)}" width="${item.width}" height="${item.height}" alt="${escapeHTML(item.title)} — Kenneth Harris archive" loading="lazy" decoding="async">
+          <span class="expand-icon" aria-hidden="true">↗</span>
+        </button>
+        <figcaption class="photo-caption"><p class="mono">${escapeHTML(labels[item.category])} / ${item.id.split('-').pop()}</p><h3>${escapeHTML(item.title)}</h3><div class="photo-actions"><button data-acquire="${item.id}">Acquire print ↗</button><button data-license="${item.id}">License image ↗</button></div></figcaption>
+      </figure>`).join('');
+    document.querySelector('#results-count').textContent = `${Math.min(visibleCount, filtered.length)} OF ${filtered.length} PHOTOGRAPHS`;
+    document.querySelector('#no-results').hidden = filtered.length > 0;
+    document.querySelector('#load-more').hidden = visibleCount >= filtered.length;
+  }
+  function openDialog(dialog) { dialog.showModal(); document.body.classList.add('modal-open'); }
+  function showPhoto(item) {
+    if (!item) return;
+    activePhoto = item;
+    const img = document.querySelector('#lightbox-image');
+    img.src = item.image;
+    img.alt = `${item.title} — photograph by Kenneth Harris`;
+    document.querySelector('#lightbox-title').textContent = item.title;
+    document.querySelector('#lightbox-id').textContent = `${item.id} / ${labels[item.category]}`;
+    document.querySelector('#previous-photo').hidden = filteredItems().length < 2;
+    document.querySelector('#next-photo').hidden = filteredItems().length < 2;
+    if (!photoDialog.open) openDialog(photoDialog);
+  }
+  function stepPhoto(direction) {
+    const filtered = filteredItems();
+    const index = filtered.findIndex(item => item.id === activePhoto?.id);
+    showPhoto(filtered[(index + direction + filtered.length) % filtered.length]);
+  }
+  function updateInquiryFields() {
+    document.querySelector('#licensing-fields').hidden = interest.value !== 'Image licensing';
+    const prompts = {
+      'Fine art print': 'Tell us which photograph, preferred size, and framing interests you.',
+      'Image licensing': 'Describe your project, image selection, distribution, and deadline.',
+      'Exhibition or institutional acquisition': 'Tell us about your institution, proposed exhibition, and dates.',
+      'Interview or speaking engagement': 'Tell us about your outlet or event, preferred speaker, and dates.',
+      'Archival patronage': 'Tell us about your interest in the Darkroom Club or Archive Guardian program.',
+    };
+    form.elements.message.placeholder = prompts[interest.value] || 'Share the project, photograph, timeline, or opportunity you’d like to discuss.';
+  }
+  function openInquiry(type, item = null) {
+    if (photoDialog.open) photoDialog.close();
+    form.reset();
+    interest.value = [...interest.options].some(option => option.value === type) ? type : 'General inquiry';
+    document.querySelector('#inquiry-photo').value = item ? `${item.title} (${item.id})` : '';
+    document.querySelector('#image-reference-label').hidden = !item;
+    form.hidden = false;
+    document.querySelector('#inquiry-result').hidden = true;
+    document.querySelector('#copy-status').textContent = '';
+    updateInquiryFields();
+    openDialog(inquiryDialog);
+    inquiryDialog.scrollTop = 0;
+  }
+  document.querySelectorAll('dialog').forEach(dialog => {
+    dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', event => {
+      const rect = dialog.getBoundingClientRect();
+      if (event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) dialog.close();
+    });
+    dialog.addEventListener('close', () => {
+      if (!document.querySelector('dialog[open]')) document.body.classList.remove('modal-open');
+    });
+  });
+  document.addEventListener('click', event => {
+    const photoButton = event.target.closest('[data-photo]');
+    const acquire = event.target.closest('[data-acquire]');
+    const license = event.target.closest('[data-license]');
+    const general = event.target.closest('[data-inquire]');
+    if (photoButton) showPhoto(items.find(item => item.id === photoButton.dataset.photo));
+    if (acquire) openInquiry('Fine art print', items.find(item => item.id === acquire.dataset.acquire));
+    if (license) openInquiry('Image licensing', items.find(item => item.id === license.dataset.license));
+    if (general) openInquiry(general.dataset.inquire);
+  });
+  document.querySelectorAll('[data-filter]').forEach(button => button.addEventListener('click', () => {
+    category = button.dataset.filter;
+    visibleCount = 6;
+    document.querySelectorAll('[data-filter]').forEach(filter => filter.setAttribute('aria-pressed', String(filter === button)));
+    renderGallery();
+  }));
+  document.querySelector('#archive-search').addEventListener('input', event => { query = event.target.value.trim(); visibleCount = 6; renderGallery(); });
+  document.querySelector('#load-more').addEventListener('click', () => {
+    const oldCount = Math.min(visibleCount, filteredItems().length);
+    visibleCount += 6;
+    renderGallery();
+    grid.querySelectorAll('.photo-open')[oldCount]?.focus({ preventScroll: true });
+  });
+  document.querySelector('#previous-photo').addEventListener('click', () => stepPhoto(-1));
+  document.querySelector('#next-photo').addEventListener('click', () => stepPhoto(1));
+  photoDialog.addEventListener('keydown', event => {
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      event.preventDefault();
+      stepPhoto(event.key === 'ArrowLeft' ? -1 : 1);
     }
-
-    items.forEach(item => {
-      gridElement.insertAdjacentHTML('beforeend', renderPhotoCard(item));
-    });
   });
-}
+  document.querySelector('#lightbox-acquire').addEventListener('click', () => openInquiry('Fine art print', activePhoto));
+  document.querySelector('#lightbox-license').addEventListener('click', () => openInquiry('Image licensing', activePhoto));
+  interest.addEventListener('change', updateInquiryFields);
+  const emailHref = `mailto:${email}`;
+  document.querySelector('#contact-email').href = emailHref;
+  document.querySelector('#contact-email').textContent = email;
+  document.querySelector('#result-email').href = emailHref;
+  document.querySelector('#result-email').textContent = email;
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    const data = new FormData(form);
+    const photo = data.get('photograph');
+    const subject = `Kenneth Harris Archive — ${data.get('interest')}${photo ? ` — ${photo}` : ''}`;
+    const lines = ['Hello Kenneth Harris Archive,', '', `Interest: ${data.get('interest')}`, `Name: ${data.get('name')}`, `Email: ${data.get('email')}`];
+    if (data.get('organization')) lines.push(`Organization: ${data.get('organization')}`);
+    if (photo) lines.push(`Photograph: ${photo}`);
+    if (interest.value === 'Image licensing') {
+      lines.push(`Intended use: ${data.get('usage')}`);
+      if (data.get('rights')) lines.push(`Territory & duration: ${data.get('rights')}`);
+    }
+    lines.push('', data.get('message'), '', 'Thank you.');
+    const body = lines.join('\n');
+    const href = `${emailHref}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    document.querySelector('#email-draft').value = `To: ${email}\nSubject: ${subject}\n\n${body}`;
+    document.querySelector('#open-email').href = href;
+    form.hidden = true;
+    document.querySelector('#inquiry-result').hidden = false;
+    inquiryDialog.scrollTop = 0;
+    document.querySelector('#open-email').focus({ preventScroll: true });
+  });
+  document.querySelector('#copy-inquiry').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(document.querySelector('#email-draft').value);
+      document.querySelector('#copy-status').textContent = 'Inquiry copied. Paste it into your email app to send.';
+    } catch {
+      document.querySelector('#email-draft').focus();
+      document.querySelector('#email-draft').select();
+      document.querySelector('#copy-status').textContent = 'Select and copy the highlighted draft, then paste it into your email app.';
+    }
+  });
+  document.querySelector('#edit-inquiry').addEventListener('click', () => {
+    form.hidden = false;
+    document.querySelector('#inquiry-result').hidden = true;
+    interest.focus();
+  });
+  const menuToggle = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('#main-nav');
+  const closeMenu = () => { menuToggle.setAttribute('aria-expanded', 'false'); nav.classList.remove('is-open'); };
+  menuToggle.addEventListener('click', () => {
+    const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
+    menuToggle.setAttribute('aria-expanded', String(!expanded));
+    nav.classList.toggle('is-open', !expanded);
+  });
+  nav.querySelectorAll('a,button').forEach(link => link.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', event => { if (event.key === 'Escape' && nav.classList.contains('is-open')) { closeMenu(); menuToggle.focus(); } });
 
-document.addEventListener('DOMContentLoaded', fetchAndRenderArchive);
+  // No autoplay, simulated footage, or fabricated progress. A real video replaces the poster when configured.
+  function configurePresentation() {
+    if (!config.presentationUrl) return;
+    const video = document.querySelector('#kenny-video');
+    const embed = document.querySelector('#kenny-embed');
+    try {
+      const url = new URL(config.presentationUrl, window.location.href);
+      if (!['https:', 'http:'].includes(url.protocol)) throw new Error('Unsupported presentation URL');
+      let embedUrl = '';
+      if (['youtube.com', 'www.youtube.com', 'youtu.be', 'www.youtube-nocookie.com'].includes(url.hostname)) {
+        const videoId = url.hostname === 'youtu.be' ? url.pathname.slice(1) : url.searchParams.get('v') || url.pathname.split('/').pop();
+        if (!/^[a-zA-Z0-9_-]{11}$/.test(videoId)) throw new Error('Invalid YouTube video ID');
+        embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}`;
+      } else if (['vimeo.com', 'www.vimeo.com', 'player.vimeo.com'].includes(url.hostname)) {
+        const parts = url.pathname.split('/').filter(Boolean);
+        const videoId = parts.find(part => /^\d+$/.test(part));
+        if (!videoId) throw new Error('Invalid Vimeo video ID');
+        const privacyHash = url.searchParams.get('h') || parts[parts.indexOf(videoId) + 1];
+        embedUrl = `https://player.vimeo.com/video/${videoId}${privacyHash ? `?h=${encodeURIComponent(privacyHash)}` : ''}`;
+      } else if (!/\.(mp4|webm|m4v)$/i.test(url.pathname)) throw new Error('Use a direct video file, YouTube, or Vimeo URL');
+      if (embedUrl) {
+        embed.src = embedUrl;
+        embed.hidden = false;
+        embed.allowFullscreen = true;
+      } else {
+        video.src = url.href;
+        video.hidden = false;
+        if (config.presentationCaptions) {
+          const captionsUrl = new URL(config.presentationCaptions, window.location.href);
+          if (['http:', 'https:'].includes(captionsUrl.protocol)) {
+            const track = document.createElement('track');
+            track.kind = 'captions'; track.label = 'English'; track.srclang = 'en'; track.src = captionsUrl.href; track.default = true;
+            video.append(track);
+          }
+        }
+        video.addEventListener('error', () => { document.querySelector('#video-error').hidden = false; });
+      }
+      document.querySelector('#presentation-placeholder').hidden = true;
+      document.querySelector('.presentation-poster').hidden = true;
+    } catch {
+      document.querySelector('#video-error').hidden = false;
+    }
+  }
+  document.querySelector('#copyright-year').textContent = new Date().getFullYear();
+  configurePresentation();
+  renderGallery();
+})();
