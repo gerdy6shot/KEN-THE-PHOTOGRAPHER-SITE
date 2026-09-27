@@ -6,7 +6,9 @@
     "dev": "vite --host 127.0.0.1",
     "build": "node scripts/build.mjs",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "node --test scripts/motion.test.mjs"
+    "test": "node --test scripts/motion.test.mjs",
+    "test:backend": "deno test --allow-env supabase/tests",
+    "check:backend": "deno check supabase/functions/*/index.ts"
   },
   "repository": {
     "type": "git",

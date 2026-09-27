@@ -5,3 +5,8 @@ node_modules/
 dist/
 .wrangler/
 supabase/.temp/
+supabase/functions/.env
+supabase/.env
+.env.*
+!.env.example
+!supabase/functions/.env.example

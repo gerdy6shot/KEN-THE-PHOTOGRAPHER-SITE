@@ -1,3 +1,4 @@
+import { submitInquiry } from './src/inquiry-client.js';
 (() => {
   'use strict';
   const config = window.SITE_CONFIG || {};
@@ -13,6 +14,10 @@
   let query = '';
   let visibleCount = 6;
   let activePhoto = null;
+  let inquiryPhoto = null;
+  let inquiryGeneration = 0;
+  let lastPayload = null;
+  let submissionKey = null;
   const grid = document.querySelector('#photo-grid');
   const photoDialog = document.querySelector('#photo-dialog');
   const inquiryDialog = document.querySelector('#inquiry-dialog');
@@ -61,12 +66,19 @@
   function openInquiry(type, item = null) {
     if (photoDialog.open) photoDialog.close();
     form.reset();
+    inquiryPhoto = item;
+    inquiryGeneration++;
+    lastPayload = null;
+    submissionKey = null;
+    document.querySelector('#inquiry-error').textContent = '';
+    form.querySelector('[type="submit"]').disabled = false;
+    form.querySelector('[type="submit"]').textContent = 'Send inquiry ↗';
     interest.value = [...interest.options].some(option => option.value === type) ? type : 'General inquiry';
     document.querySelector('#inquiry-photo').value = item ? `${item.title} (${item.id})` : '';
     document.querySelector('#image-reference-label').hidden = !item;
     form.hidden = false;
     document.querySelector('#inquiry-result').hidden = true;
-    document.querySelector('#copy-status').textContent = '';
+
     updateInquiryFields();
     openDialog(inquiryDialog);
     inquiryDialog.scrollTop = 0;
@@ -118,45 +130,41 @@
   const emailHref = `mailto:${email}`;
   document.querySelector('#contact-email').href = emailHref;
   document.querySelector('#contact-email').textContent = email;
-  document.querySelector('#result-email').href = emailHref;
-  document.querySelector('#result-email').textContent = email;
-  form.addEventListener('submit', event => {
+  form.addEventListener('submit', async event => {
     event.preventDefault();
-    if (!form.reportValidity()) return;
+    const button = form.querySelector('[type="submit"]');
+    if (button.disabled || !form.reportValidity()) return;
+    const generation = inquiryGeneration;
     const data = new FormData(form);
-    const photo = data.get('photograph');
-    const subject = `Kenneth Harris Archive — ${data.get('interest')}${photo ? ` — ${photo}` : ''}`;
-    const lines = ['Hello Kenneth Harris Archive,', '', `Interest: ${data.get('interest')}`, `Name: ${data.get('name')}`, `Email: ${data.get('email')}`];
-    if (data.get('organization')) lines.push(`Organization: ${data.get('organization')}`);
-    if (photo) lines.push(`Photograph: ${photo}`);
+    let message = String(data.get('message'));
     if (interest.value === 'Image licensing') {
-      lines.push(`Intended use: ${data.get('usage')}`);
-      if (data.get('rights')) lines.push(`Territory & duration: ${data.get('rights')}`);
+      message += `\n\nIntended use: ${data.get('usage')}\nTerritory & duration: ${data.get('rights') || 'To discuss'}`;
     }
-    lines.push('', data.get('message'), '', 'Thank you.');
-    const body = lines.join('\n');
-    const href = `${emailHref}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    document.querySelector('#email-draft').value = `To: ${email}\nSubject: ${subject}\n\n${body}`;
-    document.querySelector('#open-email').href = href;
-    form.hidden = true;
-    document.querySelector('#inquiry-result').hidden = false;
-    inquiryDialog.scrollTop = 0;
-    document.querySelector('#open-email').focus({ preventScroll: true });
-  });
-  document.querySelector('#copy-inquiry').addEventListener('click', async () => {
+    const payload = {
+      name: data.get('name'), email: data.get('email'), organization: data.get('organization'),
+      inquiry_type: data.get('interest'), photograph_id: inquiryPhoto?.id || '',
+      photograph_title: inquiryPhoto?.title || '', message, website: data.get('website') || '',
+    };
+    const fingerprint = JSON.stringify(payload);
+    if (fingerprint !== lastPayload) { submissionKey = crypto.randomUUID(); lastPayload = fingerprint; }
+    button.disabled = true;
+    button.textContent = 'Sending…';
+    const error = document.querySelector('#inquiry-error');
+    error.textContent = '';
     try {
-      await navigator.clipboard.writeText(document.querySelector('#email-draft').value);
-      document.querySelector('#copy-status').textContent = 'Inquiry copied. Paste it into your email app to send.';
-    } catch {
-      document.querySelector('#email-draft').focus();
-      document.querySelector('#email-draft').select();
-      document.querySelector('#copy-status').textContent = 'Select and copy the highlighted draft, then paste it into your email app.';
+      await submitInquiry({ ...payload, idempotency_key: submissionKey });
+      if (generation !== inquiryGeneration) return;
+      form.hidden = true;
+      document.querySelector('#inquiry-result').hidden = false;
+      inquiryDialog.scrollTop = 0;
+      document.querySelector('#inquiry-result').focus({ preventScroll: true });
+    } catch (failure) {
+      if (generation === inquiryGeneration) error.textContent = failure.name === 'TimeoutError'
+        ? 'Receipt could not be confirmed yet. Please retry; the same request will not be stored twice.'
+        : (failure.message || 'Please try again or email info@kenthephotographer.com.');
+    } finally {
+      if (generation === inquiryGeneration) { button.disabled = false; button.textContent = 'Send inquiry ↗'; }
     }
-  });
-  document.querySelector('#edit-inquiry').addEventListener('click', () => {
-    form.hidden = false;
-    document.querySelector('#inquiry-result').hidden = true;
-    interest.focus();
   });
   const menuToggle = document.querySelector('.menu-toggle');
   const nav = document.querySelector('#main-nav');

@@ -10,7 +10,7 @@ The production host is the existing Cloudflare Pages project `ken-the-photograph
 
 Build with `node scripts/build.mjs`, then deploy with `wrangler pages deploy dist --project-name ken-the-photographer --branch main`. The build includes only public website assets, excluding repository metadata and local configuration. Cloudflare response headers are configured in `_headers`.
 
-The original source referenced a Supabase project that is not accessible to the currently connected accounts. No replacement project is selected automatically; inquiry email drafts remain available until the correct backend is confirmed.
+The backend uses the dedicated Supabase project `jurnsxyyahltltfrljls`. See [backend operations](docs/backend-setup.md), [Google Workspace setup](docs/google-workspace-setup.md), and [Gemini setup](docs/gemini-setup.md). Google authorization and Gemini credentials are configured separately; stored requests do not depend on either integration.
 
 ## Configure inquiries and Kenny's presentation
 
@@ -26,7 +26,7 @@ The video supports native playback controls, full screen, and mobile inline play
 
 All acquisition, licensing, publication, merchandise, exhibition, press, documentary, preservation, and patron buttons open a contextual form. Photograph inquiries include a stable archive reference. Licensing requests capture intended use, territory, and duration.
 
-Submitting prepares a `mailto:` draft in the visitor's email application. The visitor must send it. The page does not claim the inquiry was delivered; it also provides the full draft for copying, a direct address, and an edit option. There is no server-side lead storage or automatic email delivery.
+Submitting stores the inquiry through the Supabase `submit-inquiry` Edge Function and confirms receipt. Photograph IDs and licensing details are preserved. Loading, retry and error states do not discard the visitor’s text. The small email fallback remains `info@kenthephotographer.com`. No local email application is launched by primary submission.
 
 ## Archive and media
 
@@ -36,7 +36,7 @@ Captions and collection assignments are inherited from the original archive, and
 
 ## Verification
 
-The upgrade has been checked at desktop and phone widths. Verify search, filters, load more, photograph navigation, Escape/close behavior, contextual forms, prepared email drafts, navigation, and all image URLs when changing content. Once a real video is configured, verify playback and captions with that source.
+The upgrade has been checked at desktop and phone widths. Verify search, filters, load more, photograph navigation, Escape/close behavior, contextual forms, server submission and email fallback, navigation, and all image URLs when changing content. Once a real video is configured, verify playback and captions with that source.
 
 ## Parallax components and tuning
 
