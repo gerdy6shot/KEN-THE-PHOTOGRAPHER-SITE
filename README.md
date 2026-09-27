@@ -43,7 +43,7 @@ The upgrade has been checked at desktop and phone widths. Verify search, filters
 - `src/components/ParallaxScene.jsx`: live reduced-motion and pointer/viewport policy, plus pause/resume control.
 - `CustomCameraCursor.jsx`: desktop-only weighted mouse tracking, velocity-sensitive tilt, hover and shutter press states. A noninteractive manual popover keeps it above modal dialogs. Native cursor remains until the image is loaded and the mouse moves; keyboard navigation, pause, touch and reduced motion restore it.
 - `HeroDepth.jsx`: layered background, title, texture and foreground parallax.
-- `AudioToggle.jsx` / `shutter-audio.js`: muted-by-default, keyboard-accessible sound toggle. A synthesized mechanical shutter buffer is precomputed locally; every press uses its own Web Audio source. No external sound recording is used.
+- `AudioToggle.jsx` / `shutter-audio.js`: enabled-by-default, keyboard-accessible sound toggle. A synthesized mechanical shutter buffer is precomputed locally; every press uses its own Web Audio source. No external sound recording is used.
 - `FloatingFrame.jsx`: GSAP scroll settling on an outer wrapper and Framer Motion hover/focus lift on the inner figure. Separate wrappers prevent transform conflicts.
 - `GalleryGrid.jsx`: existing lazy-loaded archive images, captions, image IDs, and inquiry actions.
 - `src/main.jsx`: React portals bridge the existing gallery filtering and load-more focus behavior.
@@ -85,7 +85,7 @@ The cursor replaces the former hero camera. The hero retains its scroll-to-disco
 | pressedScale | 0.88 | Shutter-press scale. |
 | volume | 0.18 | Web Audio gain; use 0–1, with low levels recommended. |
 
-Sound starts muted on every page load and only enables through the fixed SOUND OFF button. Enabling it resumes AudioContext during the user gesture and plays a preview. Mouse presses then play overlapping 160ms shutter sounds. The mute button stops all active sources and remains reachable inside modal dialogs. Touch interactions do not trigger shutter sounds; the user can still enable and preview audio using the toggle.
+Sound starts enabled on every page load. The first mouse press creates/resumes AudioContext during that user gesture and plays the shutter; subsequent presses play overlapping 160ms shutter sounds. The SOUND ON button lets visitors mute it. Re-enabling sound plays a preview. The mute button stops all active sources and remains reachable inside modal dialogs. Touch interactions do not trigger shutter sounds; the user can still enable and preview audio using the toggle.
 
 Audio implementation references: [AudioContext.resume](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/resume) and [AudioBufferSourceNode](https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode).
 
