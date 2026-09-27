@@ -16,7 +16,7 @@ The original source referenced a Supabase project that is not accessible to the 
 
 Edit `site-config.js`:
 
-- `inquiryEmail`: currently retains the existing website address, `licensing@kenthephotographer.com`. Confirm that the mailbox is monitored before publishing.
+- `inquiryEmail`: currently retains the existing website address, `info@kenthephotographer.com`. Confirm that the mailbox is monitored before publishing.
 - `presentationUrl`: a relative MP4/WebM file path, an HTTPS direct video URL, or a YouTube/Vimeo link. Leave empty until Kenny's actual presentation is available; the page then explicitly says “Video presentation coming soon.”
 - `presentationCaptions`: optional path/URL to English WebVTT captions for directly hosted video. For YouTube/Vimeo, manage captions on the video platform.
 
