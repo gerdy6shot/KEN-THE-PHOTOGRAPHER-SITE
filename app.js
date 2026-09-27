@@ -2,7 +2,7 @@
   'use strict';
   const config = window.SITE_CONFIG || {};
   const items = window.ARCHIVE_ITEMS || [];
-  const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(config.inquiryEmail || '') ? config.inquiryEmail : 'licensing@kenthephotographer.com';
+  const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(config.inquiryEmail || '') ? config.inquiryEmail : 'info@kenthephotographer.com';
   const labels = { early: 'THE EARLY YEARS', culture: 'MUSIC & CULTURE', march: 'MILLION MAN MARCH', movements: 'THE MOVEMENT' };
   const featured = ['KTP-EARLY-010', 'KTP-EARLY-006', 'KTP-EARLY-004', 'KTP-CULTURE-007', 'KTP-CULTURE-012', 'KTP-EARLY-002'];
   const orderedItems = [...items].sort((a, b) => {
