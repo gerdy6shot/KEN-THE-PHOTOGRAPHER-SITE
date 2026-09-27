@@ -1,0 +1,8 @@
+{
+  "compilerOptions": { "strict": true },
+  "lint": { "rules": { "exclude": ["no-explicit-any"] } },
+  "tasks": {
+    "test": "deno test --allow-env ../tests",
+    "check": "deno check */index.ts"
+  }
+}
