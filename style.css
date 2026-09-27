@@ -910,6 +910,21 @@ p {
   font-size:10px;
   margin:20px 0 0
 }
+.archive-colophon {
+  padding:34px 6.5%;
+  text-align:center;
+  font-size:10px;
+  line-height:1.8;
+  letter-spacing:.15px;
+  color:#96938c
+}
+.archive-colophon a {
+  transition:color .2s
+}
+.archive-colophon a:hover,.archive-colophon a:focus-visible {
+  color:var(--gold)
+}
+
 footer {
   padding:50px 6.5% 25px
 }
@@ -929,8 +944,8 @@ footer {
   font-size:10px
 }
 .footer-bottom {
-  display:flex;
-  justify-content:space-between;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
   align-items:center;
   gap:20px;
   border-top:1px solid var(--line);
@@ -944,6 +959,34 @@ footer {
   padding:6px 0;
   color:#b7a98c
 }
+.footer-bottom>button {
+  justify-self:end
+}
+.footer-design-credit,.footer-design-credit:hover {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-self:center;
+  gap:5px;
+  text-align:center;
+  text-decoration:none;
+  color:#96938c
+}
+.design-credit-label {
+  font-size:7px;
+  letter-spacing:1.6px;
+  line-height:1.8
+}
+.design-credit-name {
+  font-size:9px;
+  letter-spacing:1.2px;
+  line-height:1.8;
+  transition:color .2s
+}
+.footer-design-credit:hover .design-credit-name,.footer-design-credit:focus-visible .design-credit-name {
+  color:var(--gold)
+}
+
 dialog {
   color:var(--cream);
   background:#131314;
@@ -1740,6 +1783,14 @@ input[readonly] {
     font-size:6px;
     gap:10px;
     line-height:1.8
+  }
+  .footer-design-credit {
+    align-self:center;
+    order:3;
+    margin-top:12px
+  }
+  .archive-colophon {
+    font-size:9px
   }
   .inquiry-dialog {
     padding:28px 20px;
