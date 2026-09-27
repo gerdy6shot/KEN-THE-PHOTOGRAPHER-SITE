@@ -41,7 +41,9 @@ The upgrade has been checked at desktop and phone widths. Verify search, filters
 ## Parallax components and tuning
 
 - `src/components/ParallaxScene.jsx`: live reduced-motion and pointer/viewport policy, plus pause/resume control.
-- `FloatingCamera.jsx`: keyboard/touch accessible anchor, mouse parallax with elapsed-time lerp, levitation, and scroll pitch. Stops its animation loop when offscreen or the tab is hidden.
+- `CustomCameraCursor.jsx`: desktop-only weighted mouse tracking, velocity-sensitive tilt, hover and shutter press states. A noninteractive manual popover keeps it above modal dialogs. Native cursor remains until the image is loaded and the mouse moves; keyboard navigation, pause, touch and reduced motion restore it.
+- `HeroDepth.jsx`: layered background, title, texture and foreground parallax.
+- `AudioToggle.jsx` / `shutter-audio.js`: muted-by-default, keyboard-accessible sound toggle. A synthesized mechanical shutter buffer is precomputed locally; every press uses its own Web Audio source. No external sound recording is used.
 - `FloatingFrame.jsx`: GSAP scroll settling on an outer wrapper and Framer Motion hover/focus lift on the inner figure. Separate wrappers prevent transform conflicts.
 - `GalleryGrid.jsx`: existing lazy-loaded archive images, captions, image IDs, and inquiry actions.
 - `src/main.jsx`: React portals bridge the existing gallery filtering and load-more focus behavior.
@@ -59,7 +61,7 @@ Change `src/motion-config.js` to tune the motion:
 | scrollTravel / scrollPitch | 58 px / 22° | Total downward travel and forward rotation over the hero scroll range. |
 | frameDrift / frameTilt / frameLift | 28 px / 3° / 22 px | Gallery entry travel, tilt, and hover/focus depth. |
 
-At 800px and below, or with coarse/no-hover pointers, decorative transforms are disabled. OS reduced motion is observed dynamically; it disables all new decorative transforms and the existing CSS disables smooth scrolling. The manual pause control also resets transforms. Only transforms animate; shadows remain static. The native cursor and page scrolling remain available.
+At 800px and below, or with coarse/no-hover pointers, decorative transforms are disabled. OS reduced motion is observed dynamically; it disables all new decorative transforms and the existing CSS disables smooth scrolling. The manual pause control also resets transforms. Only transforms animate; shadows remain static. Native scrolling remains available. The native cursor is replaced only during active desktop mouse input.
 
 Tailwind Preflight is intentionally omitted to preserve the existing typography and spacing. `_headers` permits inline style attributes required by animation libraries while keeping scripts restricted to self.
 
@@ -68,3 +70,23 @@ Tailwind Preflight is intentionally omitted to preserve the existing typography 
 `assets/images/nikon-camera.png` is a transparent RGBA asset prepared from the user-supplied Nikon photograph using the built-in image generation/editing tool (not a CLI). The original upload remains untouched.
 
 Prompt: “Background extraction for a website asset. Remove the white and light gray background from this supplied vintage Nikon camera photograph. Preserve the exact original camera, its shape, silver and black materials, lens, Nikon logo and all lettering. No redesign, no added scene. Produce an isolated camera on a genuinely transparent RGBA background, closely cropped with a small transparent margin on every side, front view as supplied. No baked-in shadow.”
+
+## Camera cursor and sound tuning
+
+The cursor replaces the former hero camera. The hero retains its scroll-to-discover link. Edit `src/cursor-config.js`:
+
+| Setting | Default | Tune |
+| --- | --- | --- |
+| lag | 0.085 seconds | Higher = heavier/slower following; lower = tighter tracking. |
+| rotationSensitivity | 0.16 | Higher = stronger directional tilt. |
+| maxRotation | 14 degrees | Safety clamp for fast mouse movements. |
+| size | 56 pixels | Resting camera width. |
+| hoverScale | 1.16 | Enlargement over interactive elements. |
+| pressedScale | 0.88 | Shutter-press scale. |
+| volume | 0.18 | Web Audio gain; use 0–1, with low levels recommended. |
+
+Sound starts muted on every page load and only enables through the fixed SOUND OFF button. Enabling it resumes AudioContext during the user gesture and plays a preview. Mouse presses then play overlapping 160ms shutter sounds. The mute button stops all active sources and remains reachable inside modal dialogs. Touch interactions do not trigger shutter sounds; the user can still enable and preview audio using the toggle.
+
+Audio implementation references: [AudioContext.resume](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/resume) and [AudioBufferSourceNode](https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode).
+
+Validation: five automated tests cover motion eligibility, frame-rate-independent smoothing, bounded cursor tilt, deterministic bounded audio samples, and opt-in/overlap/mute behavior. Browser checks cover modal stacking, keyboard audio toggling, native cursor recovery, pause, and phone overflow. No browser console errors were observed. Audio output is synthesized; browser playback was exercised but not acoustically reviewed.

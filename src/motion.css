@@ -25,3 +25,22 @@
 
 .photo-grid { perspective: 1100px; }
 .floating-frame[data-motion="false"], .floating-frame[data-motion="false"] .photo-card { transform: none !important; will-change: auto !important; }
+/* Native cursor is hidden only after a loaded camera has received mouse input. */
+body.camera-cursor-active, body.camera-cursor-active * { cursor: none !important; }
+.custom-camera-cursor { display: block; position: fixed; inset: 0 auto auto 0; height: auto; margin: 0; padding: 0; border: 0; overflow: visible; background: transparent; pointer-events: none !important; z-index: 2147483647; opacity: 0; will-change: transform, opacity; }
+.custom-camera-cursor::backdrop { display: none; }
+.custom-camera-cursor img { display: block; width: 100%; height: auto; margin-left: -50%; margin-top: -33%; filter: drop-shadow(0 5px 5px rgb(0 0 0 / .45)); will-change: transform; }
+.audio-control { position: fixed; right: 18px; bottom: max(16px, env(safe-area-inset-bottom)); z-index: 80; }
+.audio-toggle { background: #121214; border: 1px solid #63543b; color: #d4cbb9; padding: 12px; font-size: 9px; letter-spacing: 1px; cursor: pointer; }
+.audio-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+.audio-status { display: block; max-width: 170px; font-size: 11px; background: var(--ink); color: var(--cream); }
+.cursor-discover { min-height: 44px; display: flex; justify-content: end; align-items: center; margin: 0; }
+#parallax-root .motion-toggle { top: -26px; }
+.hero-texture, .hero-foreground { position: absolute; inset: -20px; pointer-events: none; }
+.hero-texture { background: repeating-linear-gradient(0deg, transparent 0 3px, rgb(255 255 255 / .025) 3px 4px); opacity: .35; }
+.hero-foreground { background: radial-gradient(ellipse at 90% 90%, rgb(197 160 89 / .12), transparent 40%); }
+@media (max-width: 800px), (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  body.camera-cursor-active, body.camera-cursor-active * { cursor: auto !important; }
+  .custom-camera-cursor { display: none !important; }
+  .hero-image, #hero-title, .hero-texture, .hero-foreground { transform: none !important; will-change: auto !important; }
+}

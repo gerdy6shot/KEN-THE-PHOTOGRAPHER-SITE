@@ -11,3 +11,31 @@ test('lerp has consistent elapsed-time response at 60 and 120Hz', () => {
   assert.ok(Math.abs(run(60)-run(120))<1e-10);
   assert.ok(smoothing(5,motionConfig.response)<0.35, 'returning from a background tab must not jump');
 });
+import { clampTilt, shutterSamples, cursorConfig } from '../src/cursor-config.js';
+import { createShutterAudio } from '../src/shutter-audio.js';
+test('cursor rotation is bounded even after a large pointer jump', () => {
+  assert.equal(clampTilt(10000),cursorConfig.maxRotation);
+  assert.equal(clampTilt(-10000),-cursorConfig.maxRotation);
+  assert.equal(clampTilt(0),0);
+});
+test('preloaded shutter is deterministic, bounded and fades to silence', () => {
+  const samples=shutterSamples();assert.deepEqual(samples,shutterSamples());
+  assert.ok(samples.every(v=>Number.isFinite(v)&&Math.abs(v)<=1));
+  assert.ok(Math.abs(samples.at(-1))<0.001);assert.equal(samples.length,7056);
+});
+test('audio is opt-in; rapid presses overlap; mute stops all sources', async () => {
+  let started=0,stopped=0,closed=0,created=0;
+  class FakeContext {
+    constructor(){created++;this.state='running';}
+    createBuffer(){return {copyToChannel(){}};}
+    createGain(){return {gain:{value:0},connect(){}};}
+    resume(){return Promise.resolve();}
+    createBufferSource(){return {connect(){},disconnect(){},start(){started++;},stop(){stopped++;}};}
+    close(){closed++;return Promise.resolve();}
+  }
+  const audio=createShutterAudio(FakeContext);
+  await audio.play();assert.equal(created,0);assert.equal(started,0);
+  await audio.enable();await Promise.all([audio.play(),audio.play(),audio.play()]);assert.equal(started,3);
+  audio.mute();assert.equal(stopped,3);await audio.play();assert.equal(started,3);
+  audio.dispose();assert.equal(closed,1);
+});
