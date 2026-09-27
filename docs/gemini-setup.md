@@ -7,7 +7,7 @@ Gemini is the only AI service in this architecture. Supabase Edge Functions call
 3. Add `GEMINI_API_KEY` and `GEMINI_MODEL` to the ignored server file `supabase/functions/.env`, then run:
 
    ```sh
-   supabase secrets set --project-ref jurnsxyyahltltfrljls --env-file supabase/functions/.env
+   supabase secrets set --project-ref koyankycsshjsezaqdbm --env-file supabase/functions/.env
    ```
 
 4. Never put this key in `VITE_` variables, Cloudflare frontend settings, `site-config.js`, Git or client JavaScript.

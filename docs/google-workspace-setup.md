@@ -10,13 +10,13 @@ The website stays on Cloudflare Pages. Its browser calls Supabase Edge Functions
 4. Create an OAuth 2.0 **Web application** client. This is a server authorization-code flow, not browser Google sign-in.
 5. Add this exact authorized redirect URI:
 
-   `https://jurnsxyyahltltfrljls.supabase.co/functions/v1/google-oauth-callback`
+   `https://koyankycsshjsezaqdbm.supabase.co/functions/v1/google-oauth-callback`
 
 6. In the ignored `supabase/functions/.env`, add the Google client ID and client secret. Preserve the existing encryption, administrator and rate-limit secrets. Never put Google credentials in `.env.local`, a `VITE_` variable, GitHub source, or Cloudflare frontend settings.
 7. Upload the server values with:
 
    ```sh
-   supabase secrets set --project-ref jurnsxyyahltltfrljls --env-file supabase/functions/.env
+   supabase secrets set --project-ref koyankycsshjsezaqdbm --env-file supabase/functions/.env
    ```
 
    Do not upload the example file with blank values over configured production secrets. Supabase already supplies `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`; do not overwrite these reserved values.
@@ -25,7 +25,7 @@ The website stays on Cloudflare Pages. Its browser calls Supabase Edge Functions
 
    ```sh
    curl --fail-with-body -X POST \
-     'https://jurnsxyyahltltfrljls.supabase.co/functions/v1/google-oauth-callback' \
+     'https://koyankycsshjsezaqdbm.supabase.co/functions/v1/google-oauth-callback' \
      -H "Authorization: Bearer $ARCHIVE_ADMIN_TOKEN" \
      -H 'Content-Type: application/json' -d '{}'
    ```

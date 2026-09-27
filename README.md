@@ -10,7 +10,7 @@ The production host is the existing Cloudflare Pages project `ken-the-photograph
 
 Build with `node scripts/build.mjs`, then deploy with `wrangler pages deploy dist --project-name ken-the-photographer --branch main`. The build includes only public website assets, excluding repository metadata and local configuration. Cloudflare response headers are configured in `_headers`.
 
-The backend uses the dedicated Supabase project `jurnsxyyahltltfrljls`. See [backend operations](docs/backend-setup.md), [Google Workspace setup](docs/google-workspace-setup.md), and [Gemini setup](docs/gemini-setup.md). Google authorization and Gemini credentials are configured separately; stored requests do not depend on either integration.
+The backend uses the dedicated Supabase project `koyankycsshjsezaqdbm`. See [backend operations](docs/backend-setup.md), [Google Workspace setup](docs/google-workspace-setup.md), and [Gemini setup](docs/gemini-setup.md). Google authorization and Gemini credentials are configured separately; stored requests do not depend on either integration.
 
 ## Configure inquiries and Kenny's presentation
 

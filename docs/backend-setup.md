@@ -1,6 +1,6 @@
 # Backend operations
 
-Target: `KEN THE PHOTOGRAPHER Project`, ref `jurnsxyyahltltfrljls`. Source branch: `codex/archive-commercial-upgrade`. Hosting stays on the existing Cloudflare Pages project.
+Target: `KEN THE PHOTOGRAPHER Project`, ref `koyankycsshjsezaqdbm`. Source branch: `codex/archive-commercial-upgrade`. Hosting stays on the existing Cloudflare Pages project.
 
 ## Files and runtime
 
@@ -42,7 +42,7 @@ Payloads are limited to 16KB and fields have strict lengths/type/email/timezone 
 The only frontend settings are:
 
 ```dotenv
-VITE_SUPABASE_URL=https://jurnsxyyahltltfrljls.supabase.co
+VITE_SUPABASE_URL=https://koyankycsshjsezaqdbm.supabase.co
 VITE_SUPABASE_PUBLISHABLE_KEY=
 ```
 
@@ -53,10 +53,10 @@ Primary submission is `submit-inquiry`, not mailto. A stored inquiry returns `su
 ## Deployment
 
 ```sh
-supabase link --project-ref jurnsxyyahltltfrljls
+supabase link --project-ref koyankycsshjsezaqdbm
 supabase db push --linked
-supabase secrets set --project-ref jurnsxyyahltltfrljls --env-file supabase/functions/.env
-supabase functions deploy submit-inquiry create-booking update-booking google-oauth-callback gemini-assist --project-ref jurnsxyyahltltfrljls --use-api
+supabase secrets set --project-ref koyankycsshjsezaqdbm --env-file supabase/functions/.env
+supabase functions deploy submit-inquiry create-booking update-booking google-oauth-callback gemini-assist --project-ref koyankycsshjsezaqdbm --use-api
 npm ci
 npm run build
 ```
