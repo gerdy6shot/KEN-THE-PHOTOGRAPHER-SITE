@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="style.css">
   <script src="site-config.js" defer></script>
   <script src="archive-data.js" defer></script>
-  <script src="app.js" defer></script>
+  <script type="module" src="/src/main.jsx"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -35,7 +35,8 @@
         <p class="hero-description">Black music. The movement. The moments in between.<br>More than 55 years of history through the lens of Kenneth “Kenny” Harris.</p>
         <div class="hero-actions"><a class="button button-gold" href="#vault">Explore the Vault <span aria-hidden="true">↗</span></a><a class="text-link" href="#presentation"><span class="small-play" aria-hidden="true">▷</span> Meet Kenny</a></div>
       </div>
-      <div class="hero-bottom"><span class="mono">RAY CHARLES <span class="muted">/ THE EARLY YEARS</span></span><a href="#vault" class="mono">SCROLL TO DISCOVER <span aria-hidden="true">↓</span></a></div>
+      <div id="parallax-root"></div>
+      <div class="hero-bottom"><span class="mono">RAY CHARLES <span class="muted">/ THE EARLY YEARS</span></span></div>
     </section>
     <div class="legacy-strip"><div><strong>55+</strong><span>YEARS BEHIND THE LENS</span></div><div><strong>One life.</strong><span>COUNTLESS UNTOLD STORIES</span></div><div><strong>A living archive.</strong><span>COLLECT · LICENSE · PRESERVE</span></div><span class="archive-seal" aria-hidden="true">KTP<br><small>NEW YORK</small></span></div>
 

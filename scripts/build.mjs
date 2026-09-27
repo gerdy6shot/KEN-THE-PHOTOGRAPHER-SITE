@@ -1,10 +1,11 @@
-import { cp, mkdir, readFile, rm, stat } from 'node:fs/promises';
+import { build } from 'vite';
+import { cp, readFile, rm, stat } from 'node:fs/promises';
 import { resolve } from 'node:path';
 const root = resolve(import.meta.dirname, '..');
 const output = resolve(root, 'dist');
-const files = ['index.html', 'style.css', 'app.js', 'archive-data.js', 'site-config.js', 'favicon.svg', '_headers'];
+const files = ['archive-data.js', 'site-config.js', 'favicon.svg', '_headers'];
 await rm(output, { recursive: true, force: true });
-await mkdir(output, { recursive: true });
+await build({ root });
 for (const file of files) await cp(resolve(root, file), resolve(output, file));
 await cp(resolve(root, 'assets'), resolve(output, 'assets'), { recursive: true });
 const source = await readFile(resolve(root, 'archive-data.js'), 'utf8');

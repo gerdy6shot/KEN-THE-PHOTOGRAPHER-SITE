@@ -1,0 +1,35 @@
+{
+  "name": "ken-the-photographer-site",
+  "version": "1.0.0",
+  "description": "Kenneth Harris photographic archive with accessible React parallax components.",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "node scripts/build.mjs",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "node --test scripts/motion.test.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gerdy6shot/KEN-THE-PHOTOGRAPHER-SITE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/gerdy6shot/KEN-THE-PHOTOGRAPHER-SITE/issues"
+  },
+  "homepage": "https://github.com/gerdy6shot/KEN-THE-PHOTOGRAPHER-SITE#readme",
+  "dependencies": {
+    "framer-motion": "13.4.4",
+    "gsap": "3.15.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.3.3",
+    "tailwindcss": "4.3.3",
+    "vite": "8.3.1"
+  },
+  "private": true,
+  "type": "module"
+}

@@ -24,14 +24,7 @@
 
   function renderGallery() {
     const filtered = filteredItems();
-    grid.innerHTML = filtered.slice(0, visibleCount).map(item => `
-      <figure class="photo-card">
-        <button class="photo-open" data-photo="${escapeHTML(item.id)}" aria-label="View ${escapeHTML(item.title)}">
-          <img src="${escapeHTML(item.image)}" width="${item.width}" height="${item.height}" alt="${escapeHTML(item.title)} — Kenneth Harris archive" loading="lazy" decoding="async">
-          <span class="expand-icon" aria-hidden="true">↗</span>
-        </button>
-        <figcaption class="photo-caption"><p class="mono">${escapeHTML(labels[item.category])} / ${item.id.split('-').pop()}</p><h3>${escapeHTML(item.title)}</h3><div class="photo-actions"><button data-acquire="${item.id}">Acquire print ↗</button><button data-license="${item.id}">License image ↗</button></div></figcaption>
-      </figure>`).join('');
+    window.renderArchiveGallery(filtered.slice(0, visibleCount), labels);
     document.querySelector('#results-count').textContent = `${Math.min(visibleCount, filtered.length)} OF ${filtered.length} PHOTOGRAPHS`;
     document.querySelector('#no-results').hidden = filtered.length > 0;
     document.querySelector('#load-more').hidden = visibleCount >= filtered.length;

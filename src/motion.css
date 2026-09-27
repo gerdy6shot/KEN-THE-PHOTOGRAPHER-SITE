@@ -1,0 +1,27 @@
+@layer theme, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+#parallax-root { position: absolute; right: 5%; bottom: 15px; width: 190px; z-index: 3; }
+.floating-camera { display: block; text-align: center; color: var(--muted); text-decoration: none; }
+.camera-object { transform-style: preserve-3d; transform-origin: center; }
+.camera-object img { width: 100%; height: auto; filter: drop-shadow(0 16px 14px rgb(0 0 0 / .5)); pointer-events: none; }
+.camera-label { display: block; font-size: 9px; letter-spacing: 1.5px; margin-top: 14px; }
+.floating-camera:hover .camera-label, .floating-camera:focus-visible .camera-label { color: var(--gold); }
+.floating-camera:focus-visible, .motion-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 8px; }
+.motion-toggle { position: absolute; right: 0; top: -36px; padding: 8px 0; background: transparent; border: 0; color: var(--muted); font-size: 8px; letter-spacing: 1px; cursor: pointer; }
+.motion-toggle:hover { color: var(--gold); }
+.floating-frame { transform-style: preserve-3d; }
+.floating-frame .photo-card { margin: 0; transform-style: preserve-3d; }
+.floating-frame .photo-open { box-shadow: 0 18px 30px rgb(0 0 0 / .28); }
+@media (max-width: 800px), (hover: none), (pointer: coarse) {
+  #parallax-root { width: 100px; right: 5%; bottom: 15px; }
+  .camera-label { font-size: 7px; letter-spacing: .6px; margin-top: 5px; }
+  .hero-bottom > .mono { max-width: calc(100% - 115px); }
+  .camera-object, .floating-frame, .floating-frame .photo-card { transform: none !important; will-change: auto !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .camera-object, .floating-frame, .floating-frame .photo-card { transform: none !important; will-change: auto !important; }
+}
+
+.photo-grid { perspective: 1100px; }
+.floating-frame[data-motion="false"], .floating-frame[data-motion="false"] .photo-card { transform: none !important; will-change: auto !important; }
