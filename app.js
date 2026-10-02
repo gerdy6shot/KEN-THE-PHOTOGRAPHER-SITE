@@ -128,7 +128,7 @@ function getGalleryCategory(item) {
     return 'grid-entertainment';
   }
 
-  if (year >= 1955 && year <= 1974) {
+  if (year >= 1969 && year <= 1974) {
     return 'grid-act-1';
   }
 
