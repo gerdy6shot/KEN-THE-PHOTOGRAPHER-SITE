@@ -196,7 +196,7 @@ import { submitInquiry } from './src/inquiry-client.js';
         if (!videoId) throw new Error('Invalid Vimeo video ID');
         const privacyHash = url.searchParams.get('h') || parts[parts.indexOf(videoId) + 1];
         embedUrl = `https://player.vimeo.com/video/${videoId}${privacyHash ? `?h=${encodeURIComponent(privacyHash)}` : ''}`;
-      } else if (!/\.(mp4|webm|m4v)$/i.test(url.pathname)) throw new Error('Use a direct video file, YouTube, or Vimeo URL');
+      } else if (!/\.(mp4|webm|m4v|mov)$/i.test(url.pathname)) throw new Error('Use a direct video file, YouTube, or Vimeo URL');
       if (embedUrl) {
         embed.src = embedUrl;
         embed.hidden = false;

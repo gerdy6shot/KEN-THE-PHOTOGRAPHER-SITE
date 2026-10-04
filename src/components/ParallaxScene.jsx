@@ -15,6 +15,10 @@ export function ParallaxScene({ children }) {
     return () => { reduced.removeEventListener('change', update); fine.removeEventListener('change', update); };
   }, []);
   const enabled = motionAllowed(policy.reduced, policy.fine, paused);
+  useEffect(() => {
+    document.documentElement.classList.toggle('scene-motion-enabled', enabled);
+    return () => document.documentElement.classList.remove('scene-motion-enabled');
+  }, [enabled]);
   return <Context.Provider value={enabled}><MotionConfig reducedMotion="user">
     {children}
     {!policy.reduced && policy.fine && <button className="motion-toggle mono" onClick={() => setPaused(v => !v)} aria-pressed={paused} aria-label="Pause decorative motion">{paused ? 'RESUME MOTION' : 'PAUSE MOTION'}</button>}

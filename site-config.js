@@ -2,7 +2,7 @@
 window.SITE_CONFIG = {
   inquiryEmail: 'info@kenthephotographer.com',
   // Set to a local video path, an HTTPS .mp4/.webm URL, or a YouTube/Vimeo URL.
-  presentationUrl: '',
+  presentationUrl: 'https://youtu.be/4pWoZHGwZFI',
   // Optional WebVTT captions for a directly hosted video.
   presentationCaptions: '',
 };
