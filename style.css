@@ -1088,19 +1088,19 @@ dialog::backdrop {
   padding:38px;
   box-sizing:border-box;
   overflow-y:auto;
-  position:relative;
+  position:fixed;
+  inset:0;
+  margin:auto;
 }
 .inquiry-dialog>.eyebrow {
   padding-right:48px;
   font-size:9px
 }
 .inquiry-dialog .dialog-close {
-  position:sticky;
-  top:12px;
-  float:right;
-  margin-top:-22px;
-  margin-right:-22px;
-  margin-bottom:-20px;
+  display:flex;
+  position:static;
+  float:none;
+  margin:0 0 16px auto;
   z-index:20;
 }
 .inquiry-dialog h2 {
@@ -1828,10 +1828,7 @@ input[readonly] {
     max-height:92dvh;
   }
   .inquiry-dialog .dialog-close {
-    top:8px;
-    margin-top:-16px;
-    margin-right:-10px;
-    margin-bottom:-28px;
+    margin:0 0 16px auto;
     width:38px;
     height:38px;
     font-size:24px;
