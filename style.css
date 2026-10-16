@@ -992,25 +992,42 @@ dialog {
   background:#131314;
   border:1px solid #61533a;
   padding:0;
+  max-height:90vh;
   max-height:90dvh;
   width:calc(100% - 40px);
-  overscroll-behavior:contain
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
 }
 dialog::backdrop {
   background:#000c;
-  backdrop-filter:blur(8px)
+  backdrop-filter:blur(8px);
 }
 .dialog-close {
   position:absolute;
   right:16px;
   top:12px;
-  z-index:5;
+  z-index:15;
   width:42px;
   height:42px;
-  background:#0a0a0bd9;
+  background:#0a0a0bf0;
   border:1px solid #5f5847;
+  color:var(--cream);
   font-size:27px;
-  line-height:1
+  line-height:1;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:border-color .2s, color .2s, background .2s;
+}
+.dialog-close:hover,
+.dialog-close:focus-visible {
+  border-color:var(--gold);
+  color:var(--gold);
+  background:#171613;
+  outline:2px solid var(--gold);
+  outline-offset:2px;
 }
 .photo-dialog {
   max-width:1120px
@@ -1068,11 +1085,23 @@ dialog::backdrop {
 }
 .inquiry-dialog {
   max-width:680px;
-  padding:38px
+  padding:38px;
+  box-sizing:border-box;
+  overflow-y:auto;
+  position:relative;
 }
 .inquiry-dialog>.eyebrow {
-  padding-right:35px;
+  padding-right:48px;
   font-size:9px
+}
+.inquiry-dialog .dialog-close {
+  position:sticky;
+  top:12px;
+  float:right;
+  margin-top:-22px;
+  margin-right:-22px;
+  margin-bottom:-20px;
+  z-index:20;
 }
 .inquiry-dialog h2 {
   font-size:46px;
@@ -1793,16 +1822,30 @@ input[readonly] {
     font-size:9px
   }
   .inquiry-dialog {
-    padding:28px 20px;
-    width:calc(100% - 20px)
+    padding:28px 20px 32px;
+    width:calc(100% - 20px);
+    max-height:92vh;
+    max-height:92dvh;
+  }
+  .inquiry-dialog .dialog-close {
+    top:8px;
+    margin-top:-16px;
+    margin-right:-10px;
+    margin-bottom:-28px;
+    width:38px;
+    height:38px;
+    font-size:24px;
   }
   .inquiry-dialog>.eyebrow {
     font-size:7px;
-    margin-bottom:25px;
-    max-width:240px
+    margin-bottom:20px;
+    max-width:calc(100% - 48px);
   }
   .inquiry-dialog h2 {
-    font-size:37px
+    font-size:32px;
+  }
+  .inquiry-dialog .button[type="submit"] {
+    width:100%;
   }
   .form-row {
     grid-template-columns:1fr;
@@ -1868,18 +1911,25 @@ input[readonly] {
 }
 .site-logo {
   display:block;
-  width:clamp(330px, 26vw, 380px);
+  width:clamp(260px, 24vw, 360px);
   max-width:100%;
+  max-height:68px;
   height:auto;
   object-fit:contain;
 }
 @media (max-width:1100px) {
-  .site-logo { width:clamp(280px, 30vw, 330px); }
-  .site-header > .wordmark { flex-basis:330px; }
+  .site-logo {
+    width:clamp(220px, 28vw, 300px);
+    max-height:58px;
+  }
+  .site-header > .wordmark { flex-basis:300px; }
 }
 @media (max-width:540px) {
-  .site-logo { width:clamp(220px, 60vw, 270px); }
-  .site-header > .wordmark { flex-basis:270px; }
+  .site-logo {
+    width:clamp(180px, 56vw, 240px);
+    max-height:48px;
+  }
+  .site-header > .wordmark { flex-basis:240px; }
   .site-header > .menu-toggle { flex-shrink:0; }
 }
 
@@ -1959,15 +2009,6 @@ input[readonly] {
 .story-visuals .kenny-boardwalk:hover {
   filter:brightness(1.35) contrast(.85) saturate(.95);
 }
-
-/* KTP 2026 brand update: preserve the archive and its responsive navigation. */
-.site-header > .ktp-brand-link{display:flex;align-items:center;min-width:0;flex:0 1 auto}
-.ktp-brand-picture{display:block;width:min(100%,285px)}
-.site-header .ktp-brand-image{display:block;width:100%;max-width:285px;height:auto;object-fit:contain}
-.ktp-archive-seal{border:0;border-radius:0;transform:none;width:92px;height:56px;flex-shrink:0}
-.ktp-archive-seal img{display:block;width:100%;height:100%;object-fit:contain}
-@media(max-width:1100px){.site-header > .ktp-brand-link{flex-basis:auto}.ktp-brand-picture{width:clamp(215px,29vw,310px)}.site-header .ktp-brand-image{width:100%;max-width:none}}
-@media(max-width:540px){.site-header > .ktp-brand-link{flex:0 1 auto;min-width:0}.ktp-brand-picture{width:clamp(142px,42vw,190px)}.site-header .ktp-brand-image{width:100%;max-width:none}.ktp-archive-seal{width:70px;height:44px}}
 
 /* Archive teenage collection and booking requests */
 .prodigy-section{display:grid;grid-template-columns:0.9fr 1.1fr;gap:7%;align-items:center;border-bottom:1px solid var(--line)}
