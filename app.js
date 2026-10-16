@@ -27,11 +27,11 @@ import { submitBooking } from './src/booking-client.js';
   const interest = document.querySelector('#inquiry-type');
   const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
   const normalized = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-  const filteredItems = () => orderedItems.filter(item => (category === 'all' || item.category === category || (category === 'prodigy' && teenageIds.has(item.id))) && normalized(`${item.title} ${labels[item.category]} ${item.id}`).includes(normalized(query)));
+  const filteredItems = () => orderedItems.filter(item => (category === 'all' || item.category === category || (category === 'prodigy' && teenageIds.has(item.id))) && normalized(`${item.title} ${labels[item.category]} ${teenageIds.has(item.id) ? labels.prodigy : ''} ${item.id}`).includes(normalized(query)));
 
   function renderGallery() {
     const filtered = filteredItems();
-    window.renderArchiveGallery(filtered.slice(0, visibleCount), labels);
+    window.renderArchiveGallery(filtered.slice(0, visibleCount).map(item => category === 'prodigy' ? { ...item, category: 'prodigy' } : item), labels);
     document.querySelector('#results-count').textContent = `${Math.min(visibleCount, filtered.length)} OF ${filtered.length} PHOTOGRAPHS`;
     document.querySelector('#no-results').hidden = filtered.length > 0;
     document.querySelector('#load-more').hidden = visibleCount >= filtered.length;
@@ -44,7 +44,7 @@ import { submitBooking } from './src/booking-client.js';
     img.src = item.image;
     img.alt = `${item.title} — photograph by Kenneth Harris`;
     document.querySelector('#lightbox-title').textContent = item.title;
-    document.querySelector('#lightbox-id').textContent = `${item.id} / ${labels[item.category]}`;
+    document.querySelector('#lightbox-id').textContent = `${item.id} / ${category === 'prodigy' && teenageIds.has(item.id) ? labels.prodigy : labels[item.category]}`;
     document.querySelector('#previous-photo').hidden = filteredItems().length < 2;
     document.querySelector('#next-photo').hidden = filteredItems().length < 2;
     if (!photoDialog.open) openDialog(photoDialog);
