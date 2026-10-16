@@ -1,0 +1,39 @@
+name: KTP archive validation
+
+on:
+  push:
+    branches:
+      - codex/archive-commercial-upgrade
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout KTP repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Frontend unit tests
+        run: npm test
+      - name: Production frontend build and archive asset validation
+        run: npm run build
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Check Edge Function types
+        run: npm run check:backend
+      - name: Backend unit tests (mocked Google APIs)
+        run: npm run test:backend
