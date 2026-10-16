@@ -18,7 +18,8 @@ Deno.serve(endpoint(async (req) => {
   if (action === "list") {
     const bookings = await db.request("bookings?order=created_at.desc&limit=100");
     const communications = await db.request("communications?order=created_at.desc&limit=100");
-    return json({ success: true, bookings, communications });
+    const oauth_accounts = await db.request("google_oauth_tokens?select=account_email,expires_at,scope,created_at,updated_at&limit=10");
+    return json({ success: true, bookings, communications, oauth_accounts });
   }
   const id = uuid(input.booking_id);
   if (
