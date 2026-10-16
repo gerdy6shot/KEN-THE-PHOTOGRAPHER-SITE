@@ -51,7 +51,7 @@ Back up the key in your organization's secret manager. Replacing it without re-e
 
 ## Booking administration
 
-There is no booking-date form in the existing site, so no new visual section was invented. The new `create-booking` API accepts requests for a future interface. Existing exhibition/interview CTAs remain inquiries.
+The public website includes a booking-request form and a dedicated appointments section. The form posts to `create-booking`; it does not claim live availability or reserve a slot. Existing exhibition/interview inquiry CTAs remain inquiries. Only a trusted administrator can approve a booking and create the Google Calendar invitation.
 
 Public POST `/functions/v1/create-booking` takes `name`, `email`, optional `phone`/`organization`, `booking_type`, offset-bearing `requested_start`/`requested_end`, IANA `timezone`, optional `notes`, and a UUID `idempotency_key`. It always stores `requested`; public input cannot approve a booking.
 

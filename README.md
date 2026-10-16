@@ -90,3 +90,10 @@ Sound starts enabled on every page load. The first mouse press creates/resumes A
 Audio implementation references: [AudioContext.resume](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/resume) and [AudioBufferSourceNode](https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode).
 
 Validation: five automated tests cover motion eligibility, frame-rate-independent smoothing, bounded cursor tilt, deterministic bounded audio samples, and opt-in/overlap/mute behavior. Browser checks cover modal stacking, keyboard audio toggling, native cursor recovery, pause, and phone overflow. No browser console errors were observed. Audio output is synthesized; browser playback was exercised but not acoustically reviewed.
+
+
+## Teenage prodigy and booking interface (October 2026)
+
+The Vault includes a curated **The Undercover Teenage Prodigy** filter sourced from eight existing early-archive records. The new editorial introduction links into the filter; the early-years collection and originals remain untouched. Family portraits remain in The Early Years rather than being presented as photographs taken by Kenny as a teenager.
+
+The appointment-request section and dialog post to the existing Supabase `create-booking` Edge Function. Requests are stored as `requested`, not automatically scheduled. The Google Calendar event and Gmail confirmations require the trusted admin `update-booking` approval flow and completed Google OAuth authorization. See `docs/google-workspace-setup.md` for required account-owner consent, secrets, deploy commands, and manual checks. The public site contains no OAuth credentials or admin token.

@@ -1968,3 +1968,19 @@ input[readonly] {
 .ktp-archive-seal img{display:block;width:100%;height:100%;object-fit:contain}
 @media(max-width:1100px){.site-header > .ktp-brand-link{flex-basis:auto}.ktp-brand-picture{width:clamp(215px,29vw,310px)}.site-header .ktp-brand-image{width:100%;max-width:none}}
 @media(max-width:540px){.site-header > .ktp-brand-link{flex:0 1 auto;min-width:0}.ktp-brand-picture{width:clamp(142px,42vw,190px)}.site-header .ktp-brand-image{width:100%;max-width:none}.ktp-archive-seal{width:70px;height:44px}}
+
+/* Archive teenage collection and booking requests */
+.prodigy-section{display:grid;grid-template-columns:0.9fr 1.1fr;gap:7%;align-items:center;border-bottom:1px solid var(--line)}
+.prodigy-copy>p:not(.eyebrow){max-width:460px;line-height:1.9;font-size:13px;margin:28px 0}
+.prodigy-images{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+.prodigy-images figure{margin:0;min-width:0}
+.prodigy-images figure:first-child{grid-row:span 2}
+.prodigy-images img{width:100%;height:185px;object-fit:cover;filter:grayscale(1)}
+.prodigy-images figure:first-child img{height:390px}
+.prodigy-images figcaption{font:8px var(--mono);letter-spacing:1px;color:var(--gold);padding:9px 0}
+.booking-section{display:grid;grid-template-columns:1fr 1fr;gap:9%;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.booking-intro>p:first-child{max-width:490px;font-size:14px;line-height:1.9;margin-bottom:24px}
+.booking-intro .micro{max-width:420px;line-height:1.7;margin-top:17px}
+.booking-dialog #booking-error{color:#f1b8a9}
+@media(max-width:800px){.prodigy-section,.booking-section{grid-template-columns:1fr;gap:30px}.prodigy-images figure:first-child img{height:280px}.prodigy-images img{height:130px}}
+@media(max-width:540px){.prodigy-images{gap:8px}.prodigy-images figure:first-child img{height:235px}.prodigy-images img{height:105px}.site-header nav .nav-inquire{margin-left:0}}

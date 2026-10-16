@@ -1,10 +1,12 @@
 import { submitInquiry } from './src/inquiry-client.js';
+import { submitBooking } from './src/booking-client.js';
 (() => {
   'use strict';
   const config = window.SITE_CONFIG || {};
   const items = window.ARCHIVE_ITEMS || [];
   const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(config.inquiryEmail || '') ? config.inquiryEmail : 'info@kenthephotographer.com';
-  const labels = { early: 'THE EARLY YEARS', culture: 'MUSIC & CULTURE', march: 'MILLION MAN MARCH', movements: 'THE MOVEMENT' };
+  const labels = { early: 'THE EARLY YEARS', prodigy: 'THE UNDERCOVER TEENAGE PRODIGY', culture: 'MUSIC & CULTURE', march: 'MILLION MAN MARCH', movements: 'THE MOVEMENT' };
+  const teenageIds = new Set(['KTP-EARLY-001','KTP-EARLY-002','KTP-EARLY-003','KTP-EARLY-004','KTP-EARLY-005','KTP-EARLY-006','KTP-EARLY-009','KTP-EARLY-010']);
   const featured = ['KTP-EARLY-010', 'KTP-EARLY-006', 'KTP-EARLY-004', 'KTP-CULTURE-007', 'KTP-CULTURE-012', 'KTP-EARLY-002'];
   const orderedItems = [...items].sort((a, b) => {
     const rank = item => featured.includes(item.id) ? featured.indexOf(item.id) : featured.length;
@@ -25,7 +27,7 @@ import { submitInquiry } from './src/inquiry-client.js';
   const interest = document.querySelector('#inquiry-type');
   const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
   const normalized = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-  const filteredItems = () => orderedItems.filter(item => (category === 'all' || item.category === category) && normalized(`${item.title} ${labels[item.category]} ${item.id}`).includes(normalized(query)));
+  const filteredItems = () => orderedItems.filter(item => (category === 'all' || item.category === category || (category === 'prodigy' && teenageIds.has(item.id))) && normalized(`${item.title} ${labels[item.category]} ${item.id}`).includes(normalized(query)));
 
   function renderGallery() {
     const filtered = filteredItems();
@@ -109,6 +111,11 @@ import { submitInquiry } from './src/inquiry-client.js';
     document.querySelectorAll('[data-filter]').forEach(filter => filter.setAttribute('aria-pressed', String(filter === button)));
     renderGallery();
   }));
+  document.querySelectorAll('[data-show-prodigy]').forEach(button => button.addEventListener('click', () => {
+    const filter = document.querySelector('[data-filter="prodigy"]');
+    filter?.click();
+    document.querySelector('#vault').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+  }));
   document.querySelector('#archive-search').addEventListener('input', event => { query = event.target.value.trim(); visibleCount = 6; renderGallery(); });
   document.querySelector('#load-more').addEventListener('click', () => {
     const oldCount = Math.min(visibleCount, filteredItems().length);
@@ -165,6 +172,51 @@ import { submitInquiry } from './src/inquiry-client.js';
     } finally {
       if (generation === inquiryGeneration) { button.disabled = false; button.textContent = 'Send inquiry ↗'; }
     }
+  });
+
+  // Appointment requests use the existing server-side Supabase/Google approval workflow.
+  const bookingDialog = document.querySelector('#booking-dialog');
+  const bookingForm = document.querySelector('#booking-form');
+  const bookingError = document.querySelector('#booking-error');
+  const bookingTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/New_York';
+  document.querySelector('#booking-timezone-label').textContent = 'Time zone: ' + bookingTimezone + ' (your device)';
+  let bookingKey = null;
+  let bookingFingerprint = null;
+  document.querySelectorAll('[data-booking-open]').forEach(button => button.addEventListener('click', () => {
+    bookingForm.reset(); bookingKey = null; bookingFingerprint = null; bookingError.textContent = '';
+    bookingForm.hidden = false; document.querySelector('#booking-result').hidden = true;
+    const dateField = bookingForm.elements.requested_start;
+    const now = new Date(Date.now() + 3600000);
+    const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0,16);
+    dateField.min = local;
+    openDialog(bookingDialog);
+  }));
+  bookingForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (!bookingForm.reportValidity()) return;
+    const values = new FormData(bookingForm);
+    const localStart = String(values.get('requested_start'));
+    const start = new Date(localStart);
+    if (!Number.isFinite(start.getTime()) || start.getTime() <= Date.now()) {
+      bookingError.textContent = 'Please choose a future date and time.'; return;
+    }
+    const end = new Date(start.getTime() + Number(values.get('duration')) * 60000);
+    const payload = { name: String(values.get('name')), email: String(values.get('email')),
+      organization: String(values.get('organization') || ''), phone: String(values.get('phone') || ''),
+      booking_type: String(values.get('booking_type')), requested_start: start.toISOString(),
+      requested_end: end.toISOString(), timezone: bookingTimezone, notes: String(values.get('notes') || ''),
+      website: String(values.get('website') || '') };
+    const fingerprint = JSON.stringify(payload);
+    if (bookingFingerprint !== fingerprint) { bookingFingerprint = fingerprint; bookingKey = crypto.randomUUID(); }
+    const button = bookingForm.querySelector('[type="submit"]');
+    button.disabled = true; button.textContent = 'Sending request…'; bookingError.textContent = '';
+    try {
+      await submitBooking({ ...payload, idempotency_key: bookingKey });
+      bookingForm.hidden = true; document.querySelector('#booking-result').hidden = false;
+      document.querySelector('#booking-result').focus({ preventScroll: true });
+    } catch (e) {
+      bookingError.textContent = e.name === 'TimeoutError' ? 'Receipt could not be verified. Retry safely using the same request.' : e.message;
+    } finally { button.disabled = false; button.textContent = 'Send booking request ↗'; }
   });
   const menuToggle = document.querySelector('.menu-toggle');
   const nav = document.querySelector('#main-nav');
