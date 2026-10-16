@@ -3,4 +3,8 @@ name = "kenthephotographer"
 compatibility_date = "2026-09-25"
 pages_build_output_dir = "./dist"
 
-[env.production]
+[vars]
+VITE_SUPABASE_URL = "https://koyankycsshjsezaqdbm.supabase.co"
+
+[env.production.vars]
+VITE_SUPABASE_URL = "https://koyankycsshjsezaqdbm.supabase.co"
