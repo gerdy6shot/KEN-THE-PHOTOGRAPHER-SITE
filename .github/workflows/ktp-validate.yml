@@ -28,6 +28,9 @@ jobs:
       - name: Frontend unit tests
         run: npm test
       - name: Production frontend build and archive asset validation
+        env:
+          VITE_SUPABASE_URL: https://koyankycsshjsezaqdbm.supabase.co
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_dummy_key_for_ci_validation' }}
         run: npm run build
       - name: Set up Deno
         uses: denoland/setup-deno@v2

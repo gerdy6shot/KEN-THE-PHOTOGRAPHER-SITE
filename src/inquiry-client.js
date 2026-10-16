@@ -1,4 +1,4 @@
-const endpoint = import.meta.env.VITE_SUPABASE_URL;
+const endpoint = import.meta.env.VITE_SUPABASE_URL || 'https://koyankycsshjsezaqdbm.supabase.co';
 const publicKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 export async function submitInquiry(payload) {
   if (!endpoint) throw new Error('Online inquiries are temporarily unavailable. Please email info@kenthephotographer.com.');

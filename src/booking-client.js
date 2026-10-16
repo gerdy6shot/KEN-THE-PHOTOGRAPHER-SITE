@@ -1,5 +1,5 @@
 // Public booking requests; Google credentials and approval remain server-side.
-const endpoint = import.meta.env.VITE_SUPABASE_URL;
+const endpoint = import.meta.env.VITE_SUPABASE_URL || 'https://koyankycsshjsezaqdbm.supabase.co';
 const publicKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 export async function submitBooking(payload) {
   if (!endpoint) throw new Error('Online booking requests are temporarily unavailable. Please email info@kenthephotographer.com.');

@@ -4,8 +4,14 @@
   X-Frame-Options: DENY
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; style-src-attr 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self' https://*.supabase.co; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; object-src 'none'; base-uri 'self'; form-action 'self' mailto:; frame-ancestors 'none'
+/
+  Cache-Control: no-cache, no-store, must-revalidate
 /index.html
-  Cache-Control: no-cache
+  Cache-Control: no-cache, no-store, must-revalidate
+/admin.html
+  Cache-Control: no-cache, no-store, must-revalidate
+/admin
+  Cache-Control: no-cache, no-store, must-revalidate
 /site-config.js
   Cache-Control: no-cache
 /app.js
