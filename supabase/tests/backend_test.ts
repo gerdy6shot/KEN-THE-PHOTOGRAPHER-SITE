@@ -296,3 +296,34 @@ Deno.test("Calendar busy slot prevents event insertion", async () => {
   );
   await rejects(() => calendar.create(book), "CALENDAR_SLOT_UNAVAILABLE");
 });
+Deno.test("admin authorization protects list action", async () => {
+  Deno.env.set("ARCHIVE_ADMIN_TOKEN", "secure-admin-secret-test");
+  // Missing Authorization header
+  await rejects(
+    () => admin(new Request("https://example.com/functions/v1/update-booking", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "list" }),
+    })),
+    "UNAUTHORIZED",
+  );
+  // Valid Authorization header succeeds without throwing
+  await admin(new Request("https://example.com/functions/v1/update-booking", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer secure-admin-secret-test",
+    },
+    body: JSON.stringify({ action: "list" }),
+  }));
+});
+Deno.test("Teenage Prodigy collection includes Betty Carter and distinct portrait credits", async () => {
+  const source = await Deno.readTextFile("archive-data.js");
+  const items = JSON.parse(source.slice(source.indexOf("["), source.lastIndexOf("]") + 1));
+  const betty = items.find((i: any) => i.id === "KTP-EARLY-011");
+  assert(betty && betty.title === "Betty Carter", "Betty Carter record must exist in archive");
+  assert(betty.image === "assets/images/ktp-early-011.webp", "Betty Carter webp image path must be valid");
+  const portrait = items.find((i: any) => i.id === "KTP-EARLY-003");
+  assert(portrait && portrait.credit, "Kenny portrait must have distinct archival credit");
+});
+

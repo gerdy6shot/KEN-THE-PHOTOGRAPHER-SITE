@@ -25,7 +25,8 @@ window.ARCHIVE_ITEMS = [
     "image": "assets/images/ktp-early-003.webp",
     "width": 428,
     "height": 642,
-    "original": "./The%20UNDERCOVER%20TEENAGE%20PRODIGY/Kenneth%20Harris%20in%20Highschool.jpg"
+    "original": "./The%20UNDERCOVER%20TEENAGE%20PRODIGY/Kenneth%20Harris%20in%20Highschool.jpg",
+    "credit": "Archival portrait of Kenneth Harris in high school · Kenneth Harris Archive"
   },
   {
     "id": "KTP-EARLY-004",
@@ -89,6 +90,15 @@ window.ARCHIVE_ITEMS = [
     "width": 1080,
     "height": 756,
     "original": "./The%20UNDERCOVER%20TEENAGE%20PRODIGY/Ray%20charles.JPG"
+  },
+  {
+    "id": "KTP-EARLY-011",
+    "title": "Betty Carter",
+    "category": "early",
+    "image": "assets/images/ktp-early-011.webp",
+    "width": 1086,
+    "height": 1448,
+    "original": "./The%20UNDERCOVER%20TEENAGE%20PRODIGY/E8A9ECB1-5AC1-46D0-8877-D8BD9F2F71E9.PNG"
   },
   {
     "id": "KTP-CULTURE-001",

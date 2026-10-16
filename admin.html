@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0a0b">
+  <title>Archive Booking Administration — Kenneth Harris Archive</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Italiana&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .admin-body {
+      background: #0a0a0b;
+      color: #e5e5e5;
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+      flex: 1;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .admin-title h1 {
+      font-family: 'Italiana', serif;
+      font-size: 2.5rem;
+      color: #fff;
+      margin: 0.25rem 0 0;
+      letter-spacing: -0.02em;
+    }
+    .admin-badge {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      color: #d4af37;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .admin-nav-actions {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    .admin-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 2px;
+      cursor: pointer;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      background: transparent;
+      color: #d4af37;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .admin-btn:hover {
+      background: rgba(212, 175, 55, 0.1);
+      border-color: #d4af37;
+      color: #fff;
+    }
+    .admin-btn-gold {
+      background: #d4af37;
+      color: #0a0a0b;
+      font-weight: 600;
+      border-color: #d4af37;
+    }
+    .admin-btn-gold:hover {
+      background: #e5c158;
+      color: #0a0a0b;
+    }
+    .admin-btn-danger {
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #ef4444;
+    }
+    .admin-btn-danger:hover {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: #ef4444;
+      color: #f87171;
+    }
+    .admin-card {
+      background: #141416;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: border-color 0.2s ease;
+    }
+    .admin-card:hover {
+      border-color: rgba(212, 175, 55, 0.3);
+    }
+    .admin-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 0.5rem;
+    }
+    .admin-tab {
+      background: none;
+      border: none;
+      color: #888;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      position: relative;
+    }
+    .admin-tab.active {
+      color: #d4af37;
+      font-weight: 600;
+    }
+    .admin-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -0.5rem;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #d4af37;
+    }
+    .status-pill {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: inline-block;
+    }
+    .status-requested { background: rgba(234, 179, 8, 0.15); color: #eab308; border: 1px solid rgba(234, 179, 8, 0.3); }
+    .status-approved { background: rgba(34, 197, 94, 0.15); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); }
+    .status-cancelled { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .status-declined { background: rgba(156, 163, 175, 0.15); color: #9ca3af; border: 1px solid rgba(156, 163, 175, 0.3); }
+    .status-completed { background: rgba(59, 130, 246, 0.15); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .booking-grid {
+      display: grid;
+      grid-template-columns: 2fr 1.5fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .booking-grid { grid-template-columns: 1fr; }
+    }
+    .booking-field-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: #888;
+      text-transform: uppercase;
+      margin-bottom: 0.2rem;
+    }
+    .booking-field-val {
+      font-size: 0.95rem;
+      color: #fff;
+      margin-bottom: 0.75rem;
+    }
+    .booking-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .sync-error-banner {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      margin-top: 0.75rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      color: #f87171;
+    }
+    .login-modal {
+      background: #141416;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      padding: 2.5rem;
+      border-radius: 4px;
+      max-width: 440px;
+      width: 90%;
+      margin: 10vh auto;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+      text-align: center;
+    }
+    .login-modal input {
+      width: 100%;
+      padding: 0.8rem;
+      background: #0a0a0b;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-family: 'IBM Plex Mono', monospace;
+      margin: 1rem 0 1.5rem;
+      box-sizing: border-box;
+      border-radius: 2px;
+    }
+    .login-modal input:focus {
+      border-color: #d4af37;
+      outline: none;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 4rem 1rem;
+      color: #888;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+  </style>
+  <script src="site-config.js"></script>
+</head>
+<body class="admin-body">
+  <div class="admin-container">
+    <div id="auth-panel" class="login-modal">
+      <span class="admin-badge">Kenneth Harris Archive</span>
+      <h2 style="font-family:'Italiana',serif; color:#fff; margin:0.5rem 0 1rem; font-size:1.8rem;">Administrator Portal</h2>
+      <p style="color:#aaa; font-size:0.85rem; line-height:1.5;">Enter the Archive Administration Token to review appointment requests, synchronize Google Calendar, and inspect communications.</p>
+      <form id="login-form">
+        <input type="password" id="admin-token-input" placeholder="Paste ARCHIVE_ADMIN_TOKEN" autocomplete="current-password" required>
+        <button type="submit" class="admin-btn admin-btn-gold" style="width:100%; justify-content:center; padding:0.8rem;">Authenticate Session ↗</button>
+      </form>
+      <p id="auth-error" style="color:#ef4444; font-family:'IBM Plex Mono',monospace; font-size:0.8rem; margin-top:1rem;" role="alert"></p>
+    </div>
+
+    <div id="dashboard-panel" hidden>
+      <header class="admin-header">
+        <div class="admin-title">
+          <span class="admin-badge">THE KENNETH HARRIS ARCHIVE · APPOINTMENTS</span>
+          <h1>Archive Appointments</h1>
+        </div>
+        <div class="admin-nav-actions">
+          <button id="refresh-btn" class="admin-btn">↻ Refresh</button>
+          <a href="/" class="admin-btn">View Website ↗</a>
+          <button id="logout-btn" class="admin-btn admin-btn-danger">Sign Out</button>
+        </div>
+      </header>
+
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-tab="all">All Bookings</button>
+        <button class="admin-tab" data-tab="requested">Pending Requests</button>
+        <button class="admin-tab" data-tab="approved">Approved</button>
+        <button class="admin-tab" data-tab="cancelled">Cancelled / Declined</button>
+        <button class="admin-tab" data-tab="communications">Communications Ledger</button>
+      </div>
+
+      <div id="status-message" style="margin-bottom:1rem; font-family:'IBM Plex Mono',monospace; font-size:0.85rem;" role="status"></div>
+
+      <div id="bookings-list"></div>
+      <div id="communications-list" hidden></div>
+    </div>
+  </div>
+
+  <dialog id="reschedule-dialog" class="inquiry-dialog" style="max-width:500px;">
+    <button class="dialog-close" id="close-reschedule">×</button>
+    <p class="eyebrow">RESCHEDULE APPOINTMENT</p>
+    <h2 style="font-family:'Italiana',serif; color:#fff; margin-bottom:1.5rem;">Update Appointment Time</h2>
+    <form id="reschedule-form">
+      <input type="hidden" id="reschedule-id">
+      <label>New Start Time
+        <input type="datetime-local" id="reschedule-start" required style="width:100%; padding:0.75rem; background:#0a0a0b; color:#fff; border:1px solid rgba(255,255,255,0.2); margin-top:0.3rem;">
+      </label>
+      <label style="margin-top:1rem; display:block;">Duration
+        <select id="reschedule-duration" style="width:100%; padding:0.75rem; background:#0a0a0b; color:#fff; border:1px solid rgba(255,255,255,0.2); margin-top:0.3rem;">
+          <option value="30">30 minutes</option>
+          <option value="60">60 minutes</option>
+        </select>
+      </label>
+      <label style="margin-top:1rem; display:block;">Notes
+        <textarea id="reschedule-notes" rows="3" style="width:100%; padding:0.75rem; background:#0a0a0b; color:#fff; border:1px solid rgba(255,255,255,0.2); margin-top:0.3rem;"></textarea>
+      </label>
+      <p id="reschedule-error" style="color:#ef4444; font-family:'IBM Plex Mono',monospace; font-size:0.8rem; margin-top:0.5rem;" role="alert"></p>
+      <div style="display:flex; justify-content:flex-end; gap:0.75rem; margin-top:1.5rem;">
+        <button type="button" class="admin-btn" id="cancel-reschedule-btn">Cancel</button>
+        <button type="submit" class="admin-btn admin-btn-gold">Confirm Reschedule ↗</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+    (() => {
+      'use strict';
+      let adminToken = '';
+      let bookingsData = [];
+      let commsData = [];
+      let activeTab = 'all';
+
+      const config = window.SITE_CONFIG || {};
+      const endpoint = (config.supabaseUrl || 'https://koyankycsshjsezaqdbm.supabase.co').replace(/\/+$/, '') + '/functions/v1/update-booking';
+
+      const authPanel = document.getElementById('auth-panel');
+      const dashboardPanel = document.getElementById('dashboard-panel');
+      const loginForm = document.getElementById('login-form');
+      const tokenInput = document.getElementById('admin-token-input');
+      const authError = document.getElementById('auth-error');
+      const statusMessage = document.getElementById('status-message');
+      const bookingsList = document.getElementById('bookings-list');
+      const commsList = document.getElementById('communications-list');
+      const refreshBtn = document.getElementById('refresh-btn');
+      const logoutBtn = document.getElementById('logout-btn');
+      const rescheduleDialog = document.getElementById('reschedule-dialog');
+      const rescheduleForm = document.getElementById('reschedule-form');
+
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const token = tokenInput.value.trim();
+        if (!token) return;
+        authError.textContent = 'Verifying authorization…';
+        try {
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ action: 'list' })
+          });
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error || 'Authentication failed');
+          }
+          const data = await res.json();
+          adminToken = token;
+          tokenInput.value = '';
+          authError.textContent = '';
+          authPanel.hidden = true;
+          dashboardPanel.hidden = false;
+          bookingsData = data.bookings || [];
+          commsData = data.communications || [];
+          render();
+        } catch (err) {
+          authError.textContent = err.message === 'UNAUTHORIZED' ? 'Invalid administration token.' : 'Error connecting: ' + err.message;
+        }
+      });
+
+      logoutBtn.addEventListener('click', () => {
+        adminToken = '';
+        dashboardPanel.hidden = true;
+        authPanel.hidden = false;
+      });
+
+      refreshBtn.addEventListener('click', () => fetchList());
+
+      async function fetchList() {
+        if (!adminToken) return;
+        statusMessage.textContent = 'Refreshing data…';
+        statusMessage.style.color = '#d4af37';
+        try {
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` },
+            body: JSON.stringify({ action: 'list' })
+          });
+          if (!res.ok) throw new Error('Failed to refresh data');
+          const data = await res.json();
+          bookingsData = data.bookings || [];
+          commsData = data.communications || [];
+          statusMessage.textContent = 'Data synchronized at ' + new Date().toLocaleTimeString();
+          statusMessage.style.color = '#888';
+          render();
+        } catch (err) {
+          statusMessage.textContent = 'Refresh failed: ' + err.message;
+          statusMessage.style.color = '#ef4444';
+        }
+      }
+
+      async function updateAction(id, action, extra = {}) {
+        if (!confirm(`Are you sure you want to ${action} this appointment?`)) return;
+        statusMessage.textContent = `Processing ${action}…`;
+        statusMessage.style.color = '#d4af37';
+        try {
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${adminToken}` },
+            body: JSON.stringify({ booking_id: id, action, ...extra })
+          });
+          const result = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error(result.error || `Action ${action} failed`);
+          statusMessage.textContent = `Appointment ${action} successful!`;
+          statusMessage.style.color = '#22c55e';
+          await fetchList();
+        } catch (err) {
+          statusMessage.textContent = `Error: ${err.message}`;
+          statusMessage.style.color = '#ef4444';
+        }
+      }
+
+      document.querySelectorAll('.admin-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          activeTab = tab.dataset.tab;
+          render();
+        });
+      });
+
+      function render() {
+        if (activeTab === 'communications') {
+          bookingsList.hidden = true;
+          commsList.hidden = false;
+          renderComms();
+        } else {
+          bookingsList.hidden = false;
+          commsList.hidden = true;
+          renderBookings();
+        }
+      }
+
+      function renderBookings() {
+        bookingsList.replaceChildren();
+        let filtered = bookingsData;
+        if (activeTab === 'requested') filtered = bookingsData.filter(b => b.status === 'requested' || b.status === 'pending');
+        else if (activeTab === 'approved') filtered = bookingsData.filter(b => b.status === 'approved');
+        else if (activeTab === 'cancelled') filtered = bookingsData.filter(b => b.status === 'cancelled' || b.status === 'declined');
+
+        if (filtered.length === 0) {
+          const empty = document.createElement('div');
+          empty.className = 'empty-state';
+          empty.textContent = 'No bookings found in this view.';
+          bookingsList.appendChild(empty);
+          return;
+        }
+
+        filtered.forEach(b => {
+          const card = document.createElement('div');
+          card.className = 'admin-card';
+
+          const grid = document.createElement('div');
+          grid.className = 'booking-grid';
+
+          // Col 1: Details
+          const col1 = document.createElement('div');
+          const typeLabel = document.createElement('div');
+          typeLabel.className = 'booking-field-label';
+          typeLabel.textContent = 'Appointment Type';
+          const typeVal = document.createElement('div');
+          typeVal.className = 'booking-field-val';
+          typeVal.style.fontWeight = '600';
+          typeVal.textContent = b.booking_type || 'Archive consultation';
+
+          const nameLabel = document.createElement('div');
+          nameLabel.className = 'booking-field-label';
+          nameLabel.textContent = 'Requester';
+          const nameVal = document.createElement('div');
+          nameVal.className = 'booking-field-val';
+          nameVal.textContent = `${b.name || 'Anonymous'} <${b.email || 'No email'}>`;
+          if (b.phone) nameVal.textContent += ` · ${b.phone}`;
+          if (b.organization) nameVal.textContent += ` (${b.organization})`;
+
+          const notesLabel = document.createElement('div');
+          notesLabel.className = 'booking-field-label';
+          notesLabel.textContent = 'Notes / Inquiry';
+          const notesVal = document.createElement('div');
+          notesVal.className = 'booking-field-val';
+          notesVal.style.color = '#ccc';
+          notesVal.style.fontStyle = 'italic';
+          notesVal.textContent = b.notes || 'No additional notes provided.';
+
+          col1.append(typeLabel, typeVal, nameLabel, nameVal, notesLabel, notesVal);
+
+          // Col 2: Date & Time
+          const col2 = document.createElement('div');
+          const dateLabel = document.createElement('div');
+          dateLabel.className = 'booking-field-label';
+          dateLabel.textContent = 'Requested Time';
+          const dateVal = document.createElement('div');
+          dateVal.className = 'booking-field-val';
+          const start = new Date(b.requested_start);
+          const end = new Date(b.requested_end);
+          dateVal.textContent = `${start.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })} at ${start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} (${b.timezone || 'UTC'})`;
+
+          const statusLabel = document.createElement('div');
+          statusLabel.className = 'booking-field-label';
+          statusLabel.textContent = 'Status';
+          const statusDiv = document.createElement('div');
+          const pill = document.createElement('span');
+          pill.className = `status-pill status-${b.status || 'requested'}`;
+          pill.textContent = b.status || 'requested';
+          statusDiv.appendChild(pill);
+
+          if (b.google_event_id) {
+            const calLink = document.createElement('div');
+            calLink.style.marginTop = '0.5rem';
+            calLink.style.fontSize = '0.8rem';
+            if (b.google_html_link) {
+              const a = document.createElement('a');
+              a.href = b.google_html_link;
+              a.target = '_blank';
+              a.rel = 'noopener noreferrer';
+              a.style.color = '#d4af37';
+              a.textContent = 'Open in Google Calendar ↗';
+              calLink.appendChild(a);
+            } else {
+              calLink.textContent = `Google Event ID: ${b.google_event_id}`;
+            }
+            statusDiv.appendChild(calLink);
+          }
+
+          col2.append(dateLabel, dateVal, statusLabel, statusDiv);
+
+          // Col 3: Actions
+          const col3 = document.createElement('div');
+          col3.className = 'booking-actions';
+
+          if (b.status === 'requested' || b.status === 'pending') {
+            const approveBtn = document.createElement('button');
+            approveBtn.className = 'admin-btn admin-btn-gold';
+            approveBtn.textContent = '✓ Approve & Schedule';
+            approveBtn.onclick = () => updateAction(b.id, 'approve');
+
+            const declineBtn = document.createElement('button');
+            declineBtn.className = 'admin-btn admin-btn-danger';
+            declineBtn.textContent = 'Decline Request';
+            declineBtn.onclick = () => updateAction(b.id, 'decline');
+
+            col3.append(approveBtn, declineBtn);
+          } else if (b.status === 'approved') {
+            const rescheduleBtn = document.createElement('button');
+            rescheduleBtn.className = 'admin-btn';
+            rescheduleBtn.textContent = '✎ Reschedule';
+            rescheduleBtn.onclick = () => openReschedule(b);
+
+            const cancelBtn = document.createElement('button');
+            cancelBtn.className = 'admin-btn admin-btn-danger';
+            cancelBtn.textContent = '✕ Cancel Appointment';
+            cancelBtn.onclick = () => updateAction(b.id, 'cancel');
+
+            col3.append(rescheduleBtn, cancelBtn);
+          }
+
+          grid.append(col1, col2, col3);
+          card.appendChild(grid);
+
+          if (b.sync_error) {
+            const errBanner = document.createElement('div');
+            errBanner.className = 'sync-error-banner';
+            errBanner.textContent = `Calendar Synchronization Error: ${b.sync_error}`;
+            card.appendChild(errBanner);
+          }
+
+          bookingsList.appendChild(card);
+        });
+      }
+
+      function renderComms() {
+        commsList.replaceChildren();
+        if (commsData.length === 0) {
+          const empty = document.createElement('div');
+          empty.className = 'empty-state';
+          empty.textContent = 'No communications records found.';
+          commsList.appendChild(empty);
+          return;
+        }
+
+        commsData.forEach(c => {
+          const card = document.createElement('div');
+          card.className = 'admin-card';
+
+          const h3 = document.createElement('h3');
+          h3.style.color = '#fff';
+          h3.style.fontSize = '1.1rem';
+          h3.style.margin = '0 0 0.5rem';
+          h3.textContent = `${c.subject || 'Communication'} · To: ${c.recipient_email || 'N/A'}`;
+
+          const meta = document.createElement('div');
+          meta.className = 'booking-field-label';
+          meta.textContent = `Status: ${c.delivery_status || 'unknown'} · Message Key: ${c.message_key || 'N/A'} · Created: ${new Date(c.created_at).toLocaleString()}`;
+
+          card.append(h3, meta);
+          if (c.error_code) {
+            const err = document.createElement('div');
+            err.className = 'sync-error-banner';
+            err.textContent = `Delivery Error: ${c.error_code}`;
+            card.appendChild(err);
+          }
+          commsList.appendChild(card);
+        });
+      }
+
+      function openReschedule(booking) {
+        document.getElementById('reschedule-id').value = booking.id;
+        const currentStart = new Date(booking.requested_start);
+        const localISO = new Date(currentStart.getTime() - currentStart.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+        document.getElementById('reschedule-start').value = localISO;
+        document.getElementById('reschedule-notes').value = booking.notes || '';
+        document.getElementById('reschedule-error').textContent = '';
+        rescheduleDialog.showModal();
+      }
+
+      document.getElementById('close-reschedule').onclick = () => rescheduleDialog.close();
+      document.getElementById('cancel-reschedule-btn').onclick = () => rescheduleDialog.close();
+
+      rescheduleForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('reschedule-id').value;
+        const startInput = document.getElementById('reschedule-start').value;
+        const duration = Number(document.getElementById('reschedule-duration').value);
+        const notes = document.getElementById('reschedule-notes').value;
+        const start = new Date(startInput);
+        const end = new Date(start.getTime() + duration * 60000);
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/New_York';
+
+        rescheduleDialog.close();
+        await updateAction(id, 'update', {
+          requested_start: start.toISOString(),
+          requested_end: end.toISOString(),
+          timezone: tz,
+          notes
+        });
+      };
+    })();
+  </script>
+</body>
+</html>

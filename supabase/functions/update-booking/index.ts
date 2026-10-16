@@ -14,10 +14,16 @@ import { bookingMessages, deliver } from "../_shared/gmail.ts";
 Deno.serve(endpoint(async (req) => {
   await admin(req);
   const input = await body(req);
-  const id = uuid(input.booking_id), action = input.action;
+  const action = String(input.action);
+  if (action === "list") {
+    const bookings = await db.request("bookings?order=created_at.desc&limit=100");
+    const communications = await db.request("communications?order=created_at.desc&limit=100");
+    return json({ success: true, bookings, communications });
+  }
+  const id = uuid(input.booking_id);
   if (
     !["approve", "update", "cancel", "decline", "complete"].includes(
-      String(action),
+      action,
     )
   ) throw new AppError("INVALID_ACTION", 400);
   let row = await db.one("bookings", id);

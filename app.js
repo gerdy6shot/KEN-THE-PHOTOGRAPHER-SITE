@@ -6,7 +6,12 @@ import { submitBooking } from './src/booking-client.js';
   const items = window.ARCHIVE_ITEMS || [];
   const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(config.inquiryEmail || '') ? config.inquiryEmail : 'info@kenthephotographer.com';
   const labels = { early: 'THE EARLY YEARS', prodigy: 'THE UNDERCOVER TEENAGE PRODIGY', culture: 'MUSIC & CULTURE', march: 'MILLION MAN MARCH', movements: 'THE MOVEMENT' };
-  const teenageIds = new Set(['KTP-EARLY-001','KTP-EARLY-002','KTP-EARLY-003','KTP-EARLY-004','KTP-EARLY-005','KTP-EARLY-006','KTP-EARLY-009','KTP-EARLY-010']);
+  const teenageIds = new Set([
+    'KTP-EARLY-001', 'KTP-EARLY-002', 'KTP-EARLY-004', 'KTP-EARLY-005',
+    'KTP-EARLY-006', 'KTP-EARLY-009', 'KTP-EARLY-010', 'KTP-EARLY-011',
+    'KTP-MOVEMENTS-003', 'KTP-MOVEMENTS-004', 'KTP-MOVEMENTS-005', 'KTP-MOVEMENTS-006',
+    'KTP-MOVEMENTS-007', 'KTP-MOVEMENTS-008', 'KTP-MOVEMENTS-009', 'KTP-MOVEMENTS-010', 'KTP-MOVEMENTS-011'
+  ]);
   const featured = ['KTP-EARLY-010', 'KTP-EARLY-006', 'KTP-EARLY-004', 'KTP-CULTURE-007', 'KTP-CULTURE-012', 'KTP-EARLY-002'];
   const orderedItems = [...items].sort((a, b) => {
     const rank = item => featured.includes(item.id) ? featured.indexOf(item.id) : featured.length;
@@ -42,9 +47,11 @@ import { submitBooking } from './src/booking-client.js';
     activePhoto = item;
     const img = document.querySelector('#lightbox-image');
     img.src = item.image;
-    img.alt = `${item.title} — photograph by Kenneth Harris`;
+    img.alt = item.credit ? `${item.title} — ${item.credit}` : `${item.title} — photograph by Kenneth Harris`;
     document.querySelector('#lightbox-title').textContent = item.title;
     document.querySelector('#lightbox-id').textContent = `${item.id} / ${category === 'prodigy' && teenageIds.has(item.id) ? labels.prodigy : labels[item.category]}`;
+    const creditEl = document.querySelector('#lightbox-credit');
+    if (creditEl) creditEl.textContent = item.credit || 'Photograph by Kenneth Harris';
     document.querySelector('#previous-photo').hidden = filteredItems().length < 2;
     document.querySelector('#next-photo').hidden = filteredItems().length < 2;
     if (!photoDialog.open) openDialog(photoDialog);
