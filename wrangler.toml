@@ -1,5 +1,3 @@
-name = "ken-the-photographer-card"
+name = "ken-the-photographer-site"
 compatibility_date = "2026-10-17"
-pages_build_output_dir = "./dist"
-
-[env.production]
+assets = { directory = "./dist" }
