@@ -50,11 +50,11 @@ function generateVCard(config) {
 test('vCard generation adheres to RFC 6350 / 2426 format', () => {
   const sampleConfig = {
     displayName: 'Ken The Photographer',
-    fullName: 'Kenny Harris',
+    fullName: 'Kenneth Harris',
     role: 'Photographer',
     websiteUrl: 'https://kenthephotographer.com',
     email: 'info@kenthephotographer.com',
-    phone: '',
+    phone: '(718) 915-9472',
     location: 'South Jamaica, Queens · New York',
     vCardOrganization: 'Ken The Photographer Archive',
     vCardNote: 'Official Archive',
@@ -64,11 +64,11 @@ test('vCard generation adheres to RFC 6350 / 2426 format', () => {
 
   assert.ok(vcard.startsWith('BEGIN:VCARD\r\nVERSION:3.0'));
   assert.ok(vcard.endsWith('\r\nEND:VCARD'));
-  assert.ok(vcard.includes('FN:Ken The Photographer (Kenny Harris)'));
-  assert.ok(vcard.includes('N:Harris;Kenny;;;'));
+  assert.ok(vcard.includes('FN:Ken The Photographer (Kenneth Harris)'));
+  assert.ok(vcard.includes('N:Harris;Kenneth;;;'));
   assert.ok(vcard.includes('URL;TYPE=WORK:https://kenthephotographer.com'));
   assert.ok(vcard.includes('EMAIL;TYPE=INTERNET,WORK:info@kenthephotographer.com'));
-  assert.ok(!vcard.includes('TEL;'), 'Empty phone must not generate a TEL field');
+  assert.ok(vcard.includes('TEL;TYPE=CELL,VOICE:(718) 915-9472'));
 });
 
 test('vCard escapes special characters safely', () => {

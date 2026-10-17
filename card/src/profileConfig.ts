@@ -73,7 +73,7 @@ export interface ProfileConfig {
 
 export const profileConfig: ProfileConfig = {
   displayName: 'Ken The Photographer',
-  fullName: 'Kenny Harris',
+  fullName: 'Kenneth Harris',
   role: 'Photographer',
   location: 'South Jamaica, Queens · New York',
   archiveTag: 'The Kenneth Harris Archive · 1969–Present',
@@ -83,25 +83,25 @@ export const profileConfig: ProfileConfig = {
   // Verified from kenthephotographer.com contact inquiries
   email: 'info@kenthephotographer.com',
   
-  // Phone is not publicly listed on the website. Keep empty to hide phone actions.
-  phone: '',
+  // Confirmed cell phone
+  phone: '(718) 915-9472',
   
   // Social accounts are not publicly verified on the site. Keep empty until provided.
   socialLinks: [],
   
-  // Authentic high-resolution portrait of Kenny Harris
-  profileImage: '/assets/kenny-portrait.webp',
-  profileImageAlt: 'Kenny Harris — Ken The Photographer',
+  // Authentic high-resolution portrait of Kenneth Harris
+  profileImage: './assets/kenny-portrait.webp',
+  profileImageAlt: 'Kenneth Harris — Ken The Photographer',
   
   // Official brand emblem
-  brandLogo: '/assets/ktp-gold-emblem.png',
+  brandLogo: './assets/ktp-gold-emblem.png',
   
   // Social share image
-  socialPreviewImage: '/assets/kenny-presentation.webp',
+  socialPreviewImage: './assets/kenny-presentation.webp',
   
   // Approved production canonical URL for digital business card
   canonicalCardUrl: 'https://card.kenthephotographer.com',
   
   vCardOrganization: 'Ken The Photographer Archive',
-  vCardNote: 'Ken The Photographer (Kenny Harris) — The Kenneth Harris Photographic Archive. Visit https://kenthephotographer.com'
+  vCardNote: 'Ken The Photographer (Kenneth Harris) — The Kenneth Harris Photographic Archive. Visit https://kenthephotographer.com'
 };
