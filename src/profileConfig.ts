@@ -99,9 +99,8 @@ export const profileConfig: ProfileConfig = {
   // Social share image
   socialPreviewImage: '/assets/kenny-presentation.webp',
   
-  // Set to production URL before printing physical QR codes or cards.
-  // Empty string enables automatic browser URL detection.
-  canonicalCardUrl: '',
+  // Approved production canonical URL for digital business card
+  canonicalCardUrl: 'https://card.kenthephotographer.com',
   
   vCardOrganization: 'Ken The Photographer Archive',
   vCardNote: 'Ken The Photographer (Kenny Harris) — The Kenneth Harris Photographic Archive. Visit https://kenthephotographer.com'

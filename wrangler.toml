@@ -1,0 +1,5 @@
+name = "ken-the-photographer-card"
+compatibility_date = "2026-10-17"
+pages_build_output_dir = "./dist"
+
+[env.production]
