@@ -51,6 +51,15 @@ await build({
 for (const file of files) await cp(resolve(root, file), resolve(output, file));
 await cp(resolve(root, 'assets'), resolve(output, 'assets'), { recursive: true });
 
+// Build and embed digital business card into dist/card
+const cardDir = resolve(root, 'card');
+const cardDist = resolve(cardDir, 'dist');
+const cardOutput = resolve(output, 'card');
+const { execSync } = await import('node:child_process');
+execSync('npm run build', { cwd: cardDir, stdio: 'inherit' });
+await cp(cardDist, cardOutput, { recursive: true });
+console.log('[BUILD] Digital business card built and embedded into dist/card.');
+
 const source = await readFile(resolve(root, 'archive-data.js'), 'utf8');
 const items = JSON.parse(source.slice(source.indexOf('['), source.lastIndexOf(']') + 1));
 for (const item of items) await stat(resolve(output, item.image));

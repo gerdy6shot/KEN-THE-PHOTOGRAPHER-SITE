@@ -4,9 +4,10 @@
   "description": "Kenneth Harris photographic archive with accessible React parallax components.",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
+    "postinstall": "npm ci --prefix card",
     "build": "node scripts/build.mjs",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "node --test scripts/motion.test.mjs",
+    "test": "node --test scripts/motion.test.mjs && npm test --prefix card",
     "test:backend": "deno test --allow-env --allow-read supabase/tests",
     "check:backend": "deno check supabase/functions/*/index.ts"
   },
