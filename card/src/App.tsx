@@ -1,13 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { profileConfig } from './profileConfig';
 import { getCardUrl } from './utils/url';
 import { downloadVCard } from './utils/vcard';
 import { QRCodeModal } from './components/QRCodeModal';
 import { ShareModal } from './components/ShareModal';
+import { InstallModal } from './components/InstallModal';
+import {
+  isStandaloneMode,
+  registerServiceWorker,
+  type BeforeInstallPromptEvent,
+} from './utils/pwa';
+
+const CURRENT_YEAR = new Date().getFullYear();
 
 export const App: React.FC = () => {
   const [isQRModalOpen, setIsQRModalOpen] = useState<boolean>(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
+  const [isInstallModalOpen, setIsInstallModalOpen] = useState<boolean>(false);
+  const [isStandalone, setIsStandalone] = useState<boolean>(() => isStandaloneMode());
+  const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [isOffline, setIsOffline] = useState<boolean>(() =>
+    typeof navigator !== 'undefined' ? !navigator.onLine : false
+  );
   const [statusMessage, setStatusMessage] = useState<string>('');
 
   const cardUrl = getCardUrl();
@@ -17,6 +31,64 @@ export const App: React.FC = () => {
     setTimeout(() => {
       setStatusMessage('');
     }, 4000);
+  };
+
+  // Register PWA lifecycle listeners and service worker
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setInstallPrompt(e as BeforeInstallPromptEvent);
+    };
+
+    const handleAppInstalled = () => {
+      setIsStandalone(true);
+      setInstallPrompt(null);
+      announceStatus('Kenny Harris Digital Card installed to your device!');
+    };
+
+    const handleOnline = () => {
+      setIsOffline(false);
+      announceStatus('Online connection restored.');
+    };
+
+    const handleOffline = () => {
+      setIsOffline(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    // Register service worker scoped strictly to /card/
+    registerServiceWorker(() => {
+      announceStatus('Card updated to latest version. Reload to view changes.');
+    });
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (installPrompt) {
+      try {
+        await installPrompt.prompt();
+        const choice = await installPrompt.userChoice;
+        if (choice.outcome === 'accepted') {
+          setIsStandalone(true);
+          setInstallPrompt(null);
+        }
+      } catch (err) {
+        console.warn('Install prompt failed, showing instructions modal:', err);
+        setIsInstallModalOpen(true);
+      }
+    } else {
+      setIsInstallModalOpen(true);
+    }
   };
 
   const handleSaveContact = () => {
@@ -111,6 +183,16 @@ export const App: React.FC = () => {
             <div className="role-pill mono">{profileConfig.role}</div>
             <h1 className="display-name art-serif">{profileConfig.displayName}</h1>
             <p className="full-name">{profileConfig.fullName}</p>
+            {isOffline && (
+              <div
+                className="offline-badge mono"
+                role="status"
+                aria-label="Offline Mode: Saved Card Active"
+              >
+                <span className="offline-dot" aria-hidden="true" />
+                <span>Offline Mode · Saved Card</span>
+              </div>
+            )}
           </div>
         </section>
 
@@ -262,6 +344,50 @@ export const App: React.FC = () => {
             </button>
           </div>
 
+          {/* PWA Installation Action: Visible in browser; hidden when running installed */}
+          {!isStandalone && (
+            <button
+              type="button"
+              onClick={handleInstallClick}
+              className="btn-action btn-surface"
+              aria-label={
+                installPrompt
+                  ? 'Install digital business card to home screen'
+                  : 'Instructions to add this card to your home screen'
+              }
+            >
+              <span className="btn-inner">
+                <svg
+                  className="action-icon"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                <span className="btn-label-group">
+                  <span className="btn-title">
+                    {installPrompt ? 'Install Card' : 'Add to Home Screen'}
+                  </span>
+                  <span className="btn-sub mono">
+                    {installPrompt ? 'Instant one-tap app access' : 'Install for offline phone access'}
+                  </span>
+                </span>
+              </span>
+              <span className="btn-badge mono" aria-hidden="true">
+                {installPrompt ? 'INSTALL' : 'APP'}
+              </span>
+            </button>
+          )}
+
           {/* Verified Contact Channels: Only rendered when configured */}
           {profileConfig.email && (
             <a
@@ -351,7 +477,7 @@ export const App: React.FC = () => {
         {/* Card Footer */}
         <footer className="card-footer mono">
           <p className="footer-copyright">
-            © {new Date().getFullYear()} {profileConfig.fullName.toUpperCase()}. ALL RIGHTS RESERVED.
+            © {CURRENT_YEAR} {profileConfig.fullName.toUpperCase()}. ALL RIGHTS RESERVED.
           </p>
           <p className="footer-sub">THE KENNETH HARRIS PHOTOGRAPHIC ARCHIVE</p>
         </footer>
@@ -371,6 +497,16 @@ export const App: React.FC = () => {
         cardUrl={cardUrl}
         displayName={profileConfig.displayName}
         onOpenQR={() => setIsQRModalOpen(true)}
+      />
+
+      <InstallModal
+        isOpen={isInstallModalOpen}
+        onClose={() => setIsInstallModalOpen(false)}
+        installPrompt={installPrompt}
+        onInstallSuccess={() => {
+          setIsStandalone(true);
+          announceStatus('Kenny Harris Digital Card installed successfully!');
+        }}
       />
     </div>
   );

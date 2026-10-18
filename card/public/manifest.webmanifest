@@ -1,0 +1,33 @@
+{
+  "id": "/card/",
+  "name": "Kenny Harris — Digital Card",
+  "short_name": "Kenny Card",
+  "description": "Official digital business card for Ken The Photographer (Kenneth Harris). Connect, view the 55-year archive website, save contact vCard, or scan QR code.",
+  "start_url": "/card/",
+  "scope": "/card/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#070709",
+  "background_color": "#070709",
+  "categories": ["business", "photography", "utilities"],
+  "icons": [
+    {
+      "src": "./icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

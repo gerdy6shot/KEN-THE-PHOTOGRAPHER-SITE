@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "generate:icons": "node scripts/generate-icons.mjs",
+    "build": "node scripts/generate-icons.mjs && tsc -b && vite build",
     "test": "node --test tests/card.test.mjs",
     "lint": "oxlint",
     "preview": "vite preview"
