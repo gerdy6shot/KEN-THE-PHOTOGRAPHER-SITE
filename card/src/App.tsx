@@ -162,21 +162,17 @@ export const App: React.FC = () => {
           )}
         </header>
 
-        {/* Hero Portrait & Identity */}
+        {/* Hero Emblem & Identity */}
         <section className="card-profile" aria-label="Photographer Profile">
-          <div className="portrait-frame">
+          <div className="hero-emblem-frame">
             <img
               src={profileConfig.profileImage}
               alt={profileConfig.profileImageAlt}
-              className="portrait-img"
-              width="360"
-              height="450"
+              className="hero-emblem-img"
+              width="480"
+              height="320"
               fetchPriority="high"
             />
-            <div className="portrait-overlay" aria-hidden="true" />
-            <div className="portrait-tag mono" aria-hidden="true">
-              KTP · NY
-            </div>
           </div>
 
           <div className="identity-block">

@@ -3,7 +3,7 @@
 // Strict Scope: /card/ (No interference with root photography site)
 // ==========================================================================
 
-const CACHE_NAME = 'kenny-card-shell-v1';
+const CACHE_NAME = 'kenny-card-shell-v2';
 
 // Essential card shell assets cached upon install
 const PRECACHE_ASSETS = [
@@ -15,6 +15,7 @@ const PRECACHE_ASSETS = [
   './icon-192x192.png',
   './icon-512x512.png',
   './icon-maskable-512x512.png',
+  './assets/ktp-camera-emblem.png',
   './assets/kenny-portrait.webp',
   './assets/kenny-presentation.webp',
   './assets/ktp-gold-emblem.png',

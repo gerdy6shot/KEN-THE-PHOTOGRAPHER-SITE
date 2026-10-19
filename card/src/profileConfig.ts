@@ -89,9 +89,9 @@ export const profileConfig: ProfileConfig = {
   // Social accounts are not publicly verified on the site. Keep empty until provided.
   socialLinks: [],
   
-  // Authentic high-resolution portrait of Kenneth Harris
-  profileImage: './assets/kenny-portrait.webp',
-  profileImageAlt: 'Kenneth Harris — Ken The Photographer',
+  // Official gold camera emblem
+  profileImage: './assets/ktp-camera-emblem.png',
+  profileImageAlt: 'Ken The Photographer — KTP Camera Emblem',
   
   // Official brand emblem
   brandLogo: './assets/ktp-gold-emblem.png',
