@@ -9,13 +9,19 @@ export function mimeMessage(
   body: string,
   from: string,
   messageId: string,
+  cc?: string,
 ) {
-  if ([to, subject, from, messageId].some((s) => /[\r\n]/.test(s))) {
+  if ([to, subject, from, messageId, cc || ""].some((s) => /[\r\n]/.test(s))) {
     throw new AppError("INVALID_EMAIL_HEADER", 400);
   }
-  const mime = [
+  const headers = [
     `From: Kenneth Harris Archive <${from}>`,
     `To: ${to}`,
+  ];
+  if (cc && cc.trim()) {
+    headers.push(`Cc: ${cc.trim()}`);
+  }
+  headers.push(
     `Subject: =?UTF-8?B?${b64(subject)}?=`,
     `Message-ID: <${messageId}@kenthephotographer.com>`,
     "MIME-Version: 1.0",
@@ -23,7 +29,8 @@ export function mimeMessage(
     "Content-Transfer-Encoding: base64",
     "",
     b64(body),
-  ].join("\r\n");
+  );
+  const mime = headers.join("\r\n");
   return b64(mime).replaceAll("+", "-").replaceAll("/", "_").replace(/=+$/, "");
 }
 export async function deliver(message: Record<string, any>) {
@@ -67,6 +74,9 @@ export async function deliver(message: Record<string, any>) {
             message.body,
             workspaceEmail(),
             row.id,
+            message.to_email === workspaceEmail()
+              ? "kenthephotographer75@gmail.com"
+              : undefined,
           ),
         }),
       },

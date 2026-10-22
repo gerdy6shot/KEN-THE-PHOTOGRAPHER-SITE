@@ -27,8 +27,16 @@ function generateVCard(config) {
     `URL;TYPE=WORK:${config.websiteUrl}`,
   ];
 
+  if (config.bookingUrl && config.bookingUrl.trim().length > 0) {
+    lines.push(`URL;TYPE=CALENDAR:${config.bookingUrl.trim()}`);
+  }
+
   if (config.email && config.email.trim().length > 0) {
     lines.push(`EMAIL;TYPE=INTERNET,WORK:${config.email.trim()}`);
+  }
+
+  if (config.directEmail && config.directEmail.trim().length > 0) {
+    lines.push(`EMAIL;TYPE=INTERNET,HOME:${config.directEmail.trim()}`);
   }
 
   if (config.phone && config.phone.trim().length > 0) {
@@ -54,6 +62,8 @@ test('vCard generation adheres to RFC 6350 / 2426 format', () => {
     role: 'Photographer',
     websiteUrl: 'https://kenthephotographer.com',
     email: 'info@kenthephotographer.com',
+    directEmail: 'kenthephotographer75@gmail.com',
+    bookingUrl: 'https://kenthephotographer.com/#booking',
     phone: '(718) 915-9472',
     location: 'South Jamaica, Queens · New York',
     vCardOrganization: 'Ken The Photographer Archive',
@@ -67,7 +77,9 @@ test('vCard generation adheres to RFC 6350 / 2426 format', () => {
   assert.ok(vcard.includes('FN:Ken The Photographer (Kenneth Harris)'));
   assert.ok(vcard.includes('N:Harris;Kenneth;;;'));
   assert.ok(vcard.includes('URL;TYPE=WORK:https://kenthephotographer.com'));
+  assert.ok(vcard.includes('URL;TYPE=CALENDAR:https://kenthephotographer.com/#booking'));
   assert.ok(vcard.includes('EMAIL;TYPE=INTERNET,WORK:info@kenthephotographer.com'));
+  assert.ok(vcard.includes('EMAIL;TYPE=INTERNET,HOME:kenthephotographer75@gmail.com'));
   assert.ok(vcard.includes('TEL;TYPE=CELL,VOICE:(718) 915-9472'));
 });
 

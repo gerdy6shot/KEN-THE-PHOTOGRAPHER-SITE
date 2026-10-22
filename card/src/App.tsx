@@ -249,7 +249,45 @@ export const App: React.FC = () => {
             </span>
           </a>
 
-          {/* 2. Save Contact (vCard) */}
+          {/* 2. Book an Appointment / Google Calendar Sync */}
+          {profileConfig.bookingUrl && (
+            <a
+              href={profileConfig.bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-action btn-surface"
+              aria-label="Book an appointment or schedule archive review"
+            >
+              <span className="btn-inner">
+                <svg
+                  className="action-icon"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                  <line x1="16" y1="2" x2="16" y2="6" />
+                  <line x1="8" y1="2" x2="8" y2="6" />
+                  <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>
+                <span className="btn-label-group">
+                  <span className="btn-title">Book an Appointment</span>
+                  <span className="btn-sub mono">Calendar Scheduling & Sync</span>
+                </span>
+              </span>
+              <span className="btn-badge mono" aria-hidden="true">
+                CALENDAR
+              </span>
+            </a>
+          )}
+
+          {/* 3. Save Contact (vCard) */}
           <button
             type="button"
             onClick={handleSaveContact}
@@ -387,9 +425,9 @@ export const App: React.FC = () => {
           {/* Verified Contact Channels: Only rendered when configured */}
           {profileConfig.email && (
             <a
-              href={`mailto:${profileConfig.email}`}
+              href={`mailto:${profileConfig.email}${profileConfig.directEmail ? `?cc=${profileConfig.directEmail}` : ''}`}
               className="btn-action btn-surface"
-              aria-label={`Send email to ${profileConfig.email}`}
+              aria-label={`Send email to archive at ${profileConfig.email}`}
             >
               <span className="btn-inner">
                 <svg
@@ -408,12 +446,45 @@ export const App: React.FC = () => {
                   <polyline points="22,6 12,13 2,6" />
                 </svg>
                 <span className="btn-label-group">
-                  <span className="btn-title">Email Archive & Inquiries</span>
+                  <span className="btn-title">Email Archive & Bookings</span>
                   <span className="btn-sub mono">{profileConfig.email}</span>
                 </span>
               </span>
-              <span className="btn-arrow" aria-hidden="true">
-                ↗
+              <span className="btn-badge mono" aria-hidden="true">
+                WORKSPACE
+              </span>
+            </a>
+          )}
+
+          {profileConfig.directEmail && (
+            <a
+              href={`mailto:${profileConfig.directEmail}`}
+              className="btn-action btn-surface"
+              aria-label={`Send direct email to Kenny at ${profileConfig.directEmail}`}
+            >
+              <span className="btn-inner">
+                <svg
+                  className="action-icon"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+                <span className="btn-label-group">
+                  <span className="btn-title">Direct Email (Kenny)</span>
+                  <span className="btn-sub mono">{profileConfig.directEmail}</span>
+                </span>
+              </span>
+              <span className="btn-badge mono" aria-hidden="true">
+                GMAIL
               </span>
             </a>
           )}
@@ -444,8 +515,46 @@ export const App: React.FC = () => {
                   <span className="btn-sub mono">{profileConfig.phone}</span>
                 </span>
               </span>
-              <span className="btn-arrow" aria-hidden="true">
-                ↗
+              <span className="btn-badge mono" aria-hidden="true">
+                CALL
+              </span>
+            </a>
+          )}
+
+          {profileConfig.googleSheetsUrl && (
+            <a
+              href={profileConfig.googleSheetsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-action btn-surface"
+              aria-label="Open Client Intake and Inquiries Google Sheet"
+            >
+              <span className="btn-inner">
+                <svg
+                  className="action-icon"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <path d="M3 9h18" />
+                  <path d="M3 15h18" />
+                  <path d="M9 3v18" />
+                  <path d="M15 3v18" />
+                </svg>
+                <span className="btn-label-group">
+                  <span className="btn-title">Client Intake Sheet</span>
+                  <span className="btn-sub mono">Google Sheets Records</span>
+                </span>
+              </span>
+              <span className="btn-badge mono" aria-hidden="true">
+                SHEETS
               </span>
             </a>
           )}

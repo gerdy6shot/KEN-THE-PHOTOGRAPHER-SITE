@@ -49,7 +49,10 @@ export class Calendar {
       }\nNotes: ${plain(row.notes)}\nBooking ID: ${row.id}`,
       start: { dateTime: row.requested_start, timeZone: row.timezone },
       end: { dateTime: row.requested_end, timeZone: row.timezone },
-      attendees: [{ email: row.email, displayName: row.name }],
+      attendees: [
+        { email: row.email, displayName: row.name },
+        { email: "kenthephotographer75@gmail.com", displayName: "Kenneth Harris" },
+      ],
       extendedProperties: { private: { archive_booking_id: row.id } },
     };
   }

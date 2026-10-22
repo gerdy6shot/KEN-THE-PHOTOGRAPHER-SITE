@@ -36,8 +36,17 @@ export interface ProfileConfig {
   /** Verified contact email address. Set to '' to hide email button */
   email: string;
   
+  /** Direct personal email address */
+  directEmail?: string;
+  
   /** Verified phone number (E.164 or formatted). Set to '' to hide phone button */
   phone: string;
+
+  /** Appointment booking & calendar scheduling URL */
+  bookingUrl?: string;
+
+  /** Google Sheets client intake / inquiries spreadsheet URL */
+  googleSheetsUrl?: string;
   
   /** Verified social links. Empty array if none verified */
   socialLinks: SocialLink[];
@@ -80,11 +89,20 @@ export const profileConfig: ProfileConfig = {
   
   websiteUrl: 'https://kenthephotographer.com',
   
-  // Verified from kenthephotographer.com contact inquiries
+  // Primary Archive & Inquiries Email
   email: 'info@kenthephotographer.com',
+  
+  // Direct Personal Gmail
+  directEmail: 'kenthephotographer75@gmail.com',
   
   // Confirmed cell phone
   phone: '(718) 915-9472',
+  
+  // Live Appointment Booking & Google Calendar Sync
+  bookingUrl: 'https://kenthephotographer.com/#booking',
+  
+  // Google Sheets intake and client tracking
+  googleSheetsUrl: 'https://docs.google.com/spreadsheets/',
   
   // Social accounts are not publicly verified on the site. Keep empty until provided.
   socialLinks: [],
@@ -100,8 +118,8 @@ export const profileConfig: ProfileConfig = {
   socialPreviewImage: './assets/kenny-presentation.webp',
   
   // Approved production canonical URL for digital business card
-  canonicalCardUrl: 'https://card.kenthephotographer.com',
+  canonicalCardUrl: 'https://kenthephotographer.com/card',
   
   vCardOrganization: 'Ken The Photographer Archive',
-  vCardNote: 'Ken The Photographer (Kenneth Harris) — The Kenneth Harris Photographic Archive. Visit https://kenthephotographer.com'
+  vCardNote: 'Ken The Photographer (Kenneth Harris) — The Kenneth Harris Photographic Archive. Direct: kenthephotographer75@gmail.com | Archive: info@kenthephotographer.com | Cell: (718) 915-9472 | Website: https://kenthephotographer.com'
 };

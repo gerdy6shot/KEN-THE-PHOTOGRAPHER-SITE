@@ -30,8 +30,16 @@ export function generateVCard(config: ProfileConfig): string {
     `URL;TYPE=WORK:${config.websiteUrl}`,
   ];
 
+  if (config.bookingUrl && config.bookingUrl.trim().length > 0) {
+    lines.push(`URL;TYPE=CALENDAR:${config.bookingUrl.trim()}`);
+  }
+
   if (config.email && config.email.trim().length > 0) {
     lines.push(`EMAIL;TYPE=INTERNET,WORK:${config.email.trim()}`);
+  }
+
+  if (config.directEmail && config.directEmail.trim().length > 0) {
+    lines.push(`EMAIL;TYPE=INTERNET,HOME:${config.directEmail.trim()}`);
   }
 
   if (config.phone && config.phone.trim().length > 0) {
