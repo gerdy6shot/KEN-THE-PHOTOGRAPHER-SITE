@@ -2022,3 +2022,19 @@ input[readonly] {
 .booking-dialog #booking-error{color:#f1b8a9}
 @media(max-width:800px){.prodigy-section,.booking-section{grid-template-columns:1fr;gap:30px}.prodigy-images figure:first-child img{height:280px}.prodigy-images img{height:130px}}
 @media(max-width:540px){.prodigy-images{gap:8px}.prodigy-images figure:first-child img{height:235px}.prodigy-images img{height:105px}.site-header nav .nav-inquire{margin-left:0}}
+
+/* Consistent approved Ken the Photographer wordmark across archive and footer. */
+.legacy-strip .archive-seal {
+  width:clamp(112px, 11vw, 180px);
+  height:auto;
+  min-height:66px;
+  border:0;
+  border-radius:0;
+  transform:none;
+  flex:0 0 auto;
+  overflow:visible;
+}
+.archive-seal img { display:block; width:100%; height:auto; object-fit:contain; }
+.footer-wordmark { display:inline-flex; align-items:center; max-width:100%; }
+.footer-wordmark .site-logo { width:clamp(200px, 23vw, 320px); max-height:none; }
+@media (max-width:540px) { .footer-wordmark .site-logo { width:min(70vw, 260px); } }
